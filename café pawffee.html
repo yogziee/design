@@ -1,0 +1,800 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>café pawffee</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@1,500;1,700&family=Oswald:wght@500;600&family=Cormorant+Garamond:ital,wght@1,500&display=swap">
+<style>
+/* layout: two screens. a welcome door (title + one big mug) opens with a circular reveal into an illustrated café scene. every object in the scene is clickable and opens its own window: machine, chalkboard menu, order rail, bean-jar quiz, latte table, record player, book, the owner. one committed espresso palette */
+:root{
+  --espresso:#24150F; --roast:#341F16; --mocha:#6B4130; --caramel:#E0953E;
+  --milk:#F4EADF; --foam:#FFF8EF; --cherry:#C8452F; --matcha:#9DB35E; --slate:#2C302E;
+  --green:#C8452F; --forest:#24150F; --mint:#F4EADF; --gold:#E0953E; --cream:#F4EADF;
+  --f-display:"Shrikhand", "Cooper Black", Georgia, serif;
+  --f-body:"Manrope", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"Space Mono", ui-monospace, Menlo, monospace;
+  --f-chalk:"Caveat", "Bradley Hand", "Segoe Print", cursive;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--espresso);color:var(--milk);font-family:var(--f-body);font-size:16px;line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--caramel);outline-offset:3px;border-radius:6px}
+h1,h2,h3,h4{margin:0;font-weight:400;text-wrap:balance}
+p{margin:0}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.display{font-family:var(--f-display);line-height:.95}
+.btn{color:inherit;display:inline-flex;align-items:center;gap:8px;border:2px solid currentColor;background:transparent;border-radius:999px;padding:10px 18px;font-weight:800;cursor:pointer;text-decoration:none;transition:transform .15s,background .2s,color .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.fill{background:var(--caramel);border-color:var(--caramel);color:var(--espresso)}
+.btn.fill:hover{background:var(--foam);border-color:var(--foam)}
+.btn.sm{padding:6px 13px;font-size:14px}
+
+/* ---------- welcome: grainy gradient poster + a latte you pour ---------- */
+.welcome{position:relative;min-height:100%;overflow:hidden;background:#24150F;color:#FFF8EF;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:center;gap:clamp(16px,3vw,48px);
+  padding-block:calc(28px + env(safe-area-inset-top,0px)) calc(40px + env(safe-area-inset-bottom,0px));padding-left:max(clamp(16px,5vw,80px),env(safe-area-inset-left,0px));padding-right:max(clamp(16px,5vw,80px),env(safe-area-inset-right,0px))}
+@media (max-width:860px){.welcome{grid-template-columns:1fr;align-content:center;text-align:center}}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.7;pointer-events:none;animation:float 18s ease-in-out infinite alternate}
+.blob.a{width:46vw;height:46vw;left:-14vw;top:-10vw;background:#B8763E}
+.blob.b{width:40vw;height:34vw;left:30vw;top:-16vw;background:#6B4130;animation-delay:-4s}
+.blob.c{width:44vw;height:44vw;right:-16vw;top:18vh;background:#C98A4B;animation-delay:-9s}
+.blob.d{width:50vw;height:30vw;left:-10vw;bottom:-14vw;background:#8E4A2C;animation-delay:-13s}
+.blob.e{width:30vw;height:30vw;left:42vw;bottom:-10vw;background:#D9B48F;animation-delay:-6s}
+@media (max-width:860px){.blob{filter:blur(50px)}.blob.a{width:90vw;height:90vw}.blob.c{width:80vw;height:80vw;right:-40vw}.blob.d{width:100vw;height:60vw}}
+@keyframes float{to{transform:translate(4vw,3vh) scale(1.08)}}
+.welcome::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle at 1px 1px,rgba(255,248,239,.22) 1.1px,transparent 1.5px);background-size:26px 26px;opacity:.7}
+.welcome::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.22;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 .95 0 0 0 0 .9 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.w-copy,.w-cup{position:relative;z-index:2;min-width:0}
+.kick{font-family:var(--f-mono);font-weight:700;font-size:clamp(13px,1.3vw,17px);letter-spacing:.42em;text-transform:uppercase;color:#E0953E;margin:0}
+.wtitle{font-family:"Playfair Display", "Didot", "Bodoni 72", Georgia, serif;font-style:italic;font-weight:800;line-height:.86;letter-spacing:-.02em;margin-top:.25em;font-size:clamp(68px,11.5vw,184px);color:#FFF8EF}
+.wtitle span{display:block}
+.wtitle .outline{color:transparent;-webkit-text-stroke:2px #E0953E;font-weight:600;padding-left:.32em;display:inline-block;white-space:nowrap}
+@media (max-width:860px){.wtitle .outline{padding-left:0}}
+.pawdot{display:inline-block;width:.2em;height:.2em;margin-left:.06em;vertical-align:baseline;cursor:pointer;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.pawdot:hover{transform:rotate(-20deg) scale(1.3)}
+.pawdot svg{width:100%;height:100%;display:block}
+.wsub{font-family:"Cormorant Garamond", Georgia, serif;font-style:italic;font-size:clamp(20px,2vw,27px);line-height:1.25;margin-top:clamp(26px,4vh,44px);max-width:30ch}
+@media (max-width:860px){.wsub{margin-inline:auto}}
+.wctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(18px,3vh,30px);align-items:center}
+@media (max-width:860px){.wctas{justify-content:center}}
+.wbtn{background:#E0953E;color:#24150F;border:2px solid #E0953E;border-radius:999px;padding:13px 24px;font-weight:800;font-size:16px;cursor:pointer;display:inline-flex;gap:10px;align-items:center;box-shadow:0 10px 24px -12px rgba(42,26,18,.7);transition:transform .2s,background .2s,border-color .2s}
+.wbtn:hover{transform:translateY(-3px);background:#FFF8EF;border-color:#FFF8EF}
+.wbtn.ghost{background:rgba(36,21,15,.35);color:#FFF8EF;border-color:#FFF8EF;box-shadow:none;backdrop-filter:blur(4px)}
+.wbtn.ghost:hover{background:#FFF8EF;color:#24150F;border-color:#FFF8EF}
+.wbtn .door{display:inline-block;transition:transform .3s}
+.wbtn:hover .door{transform:translateX(5px)}
+.w-cup{display:flex;flex-direction:column;align-items:center;gap:12px}
+.w-cup canvas{width:min(100%,520px,60vh);aspect-ratio:1;touch-action:none;cursor:crosshair;display:block;filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))}
+.w-cup .hint{font-family:"Cormorant Garamond", Georgia, serif;font-style:italic;font-size:21px}
+.wl-btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.wl-btns button{border:1.5px solid rgba(255,248,239,.6);background:rgba(36,21,15,.4);backdrop-filter:blur(4px);border-radius:999px;padding:7px 14px;cursor:pointer;font-weight:800;font-size:14px;color:#FFF8EF}
+.wl-btns button:hover{background:#E0953E;color:#24150F;border-color:#E0953E}
+.beans-float{position:absolute;inset:0;z-index:1;pointer-events:none}
+.fbean{position:absolute;aspect-ratio:2/3;border-radius:50%;background:radial-gradient(ellipse at 35% 30%,#7A4A2C,#3A2318 70%);box-shadow:0 8px 14px -6px rgba(0,0,0,.5);transform:rotate(var(--r));animation:beanfloat 7s ease-in-out infinite;opacity:.9}
+.fbean::after{content:"";position:absolute;left:46%;top:12%;bottom:12%;width:2px;border-radius:2px;background:#C98A4B;opacity:.8;transform:rotate(8deg)}
+@keyframes beanfloat{0%,100%{transform:translateY(0) rotate(var(--r))}50%{transform:translateY(-22px) rotate(calc(var(--r) + 40deg))}}
+
+.deco.ring{left:4vw;bottom:7vh;width:66px;height:66px;border-radius:50%;border:6px dashed #D9B48F;animation:spin 14s linear infinite}
+.deco.star{right:3vw;top:3vh;width:58px;animation:spin 20s linear infinite}
+.deco.bean{left:47%;top:9vh;width:30px;animation:floaty 6s ease-in-out infinite}
+@keyframes floaty{50%{transform:translateY(-14px) rotate(20deg)}}
+.figcap{color:#F4EADF;position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:2;text-align:right;margin:0}
+.figcap b{font-family:var(--f-mono);font-size:12px;letter-spacing:.2em;display:block}
+.figcap i{font-family:"Cormorant Garamond", Georgia, serif;font-size:18px}
+@media (max-width:860px){.figcap,.deco.bean{display:none}.deco.ring{bottom:auto;top:3vh}}
+.bellring{transform-box:fill-box;transform-origin:50% 0;animation:ring 2.4s ease-in-out infinite}
+@keyframes ring{0%,70%,100%{transform:rotate(0)}75%{transform:rotate(14deg)}80%{transform:rotate(-12deg)}85%{transform:rotate(8deg)}90%{transform:rotate(-4deg)}}
+.steam path{animation:rise 2.6s ease-in-out infinite;opacity:0}
+.steam path:nth-child(2){animation-delay:.85s}.steam path:nth-child(3){animation-delay:1.7s}
+@keyframes rise{0%{transform:translateY(8px);opacity:0}40%{opacity:.85}100%{transform:translateY(-18px);opacity:0}}
+
+/* ---------- café ---------- */
+.cafe{position:fixed;inset:0;background:var(--espresso);display:flex;flex-direction:column;z-index:20;transition:clip-path 1s cubic-bezier(.6,0,.2,1);overflow-y:auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:calc(10px + env(safe-area-inset-top,0px)) 10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));flex:none}
+.topbar .name{font-family:var(--f-display);font-size:22px;color:var(--foam);white-space:nowrap}
+@media (max-width:480px){.explored .beans{display:none}}
+.hud{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.explored{display:flex;align-items:center;gap:8px;border:1px solid rgba(244,234,223,.2);border-radius:999px;padding:5px 12px 5px 8px}
+.explored .beans{display:flex;gap:3px}
+.explored .beans i{width:9px;height:13px;border-radius:50%;background:var(--milk);opacity:.2;transform:rotate(25deg);transition:opacity .3s,background .3s}
+.explored .beans i.on{opacity:1;background:var(--caramel)}
+.scene-scroll{flex:1;min-height:0;overflow-x:auto;overflow-y:hidden;display:flex;align-items:center;justify-content:center;padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))}
+.scene{position:relative;height:100%;max-height:100%;aspect-ratio:16/9;max-width:100%;min-width:0}
+.scene svg{width:100%;height:100%;display:block}
+@media (max-width:760px), (max-aspect-ratio:1/1){
+  .scene-scroll{justify-content:flex-start;align-items:flex-start}
+  .scene{height:auto;width:900px;max-width:none;flex:none}
+}
+.swipe{display:none;text-align:center;font-family:var(--f-chalk);font-size:20px;opacity:.75;padding-bottom:4px}
+@media (max-width:760px), (max-aspect-ratio:1/1){.swipe{display:block}}
+.hot{cursor:pointer}
+.hot .obj{transition:transform .3s cubic-bezier(.3,1.6,.5,1);transform-box:fill-box;transform-origin:50% 100%}
+.hot:hover .obj,.hot:focus-visible .obj{transform:translateY(-6px) scale(1.03)}
+.hot:focus{outline:none}
+.hot:focus-visible .ping{stroke-width:5}
+.ping{fill:var(--caramel);stroke:var(--foam);stroke-width:3;transform-box:fill-box;transform-origin:center;animation:ping 1.8s ease-in-out infinite}
+.hot.seen .ping{fill:var(--matcha);animation:none}
+@keyframes ping{50%{transform:scale(1.3)}}
+.label{font-family:var(--f-body);font-weight:800;font-size:22px;fill:var(--foam);paint-order:stroke;stroke:var(--espresso);stroke-width:6px;opacity:0;transition:opacity .2s;pointer-events:none}
+.hot:hover .label,.hot:focus-visible .label{opacity:1}
+.lamp{transform-box:view-box;animation:swing 4s ease-in-out infinite alternate}
+@keyframes swing{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}
+.cloud{animation:drift 40s linear infinite}
+@keyframes drift{from{transform:translateX(-120px)}to{transform:translateX(360px)}}
+.blink{transform-box:fill-box;transform-origin:center;animation:blink 4.2s infinite}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+.wave{transform-box:view-box;animation:wave 1.3s ease-in-out infinite alternate}
+@keyframes wave{from{transform:rotate(-10deg)}to{transform:rotate(14deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.dock{flex:none;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding-block:8px calc(12px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.dock button{border:0;background:var(--roast);border-radius:50%;width:48px;height:48px;cursor:pointer;font-size:20px;display:grid;place-items:center;transition:transform .2s,background .2s;position:relative}
+.dock button:hover{transform:translateY(-4px) rotate(-6deg);background:var(--caramel)}
+.dock button.seen::after{content:"";position:absolute;top:3px;right:3px;width:9px;height:9px;border-radius:50%;background:var(--matcha)}
+.say{position:fixed;z-index:95;pointer-events:none;background:var(--foam);color:var(--espresso);font-family:var(--f-chalk);font-size:clamp(18px,1.8vw,26px);font-weight:700;border-radius:16px;padding:4px 14px 6px;white-space:nowrap;transform:translate(-50%,-100%);animation:popin .35s cubic-bezier(.3,1.6,.5,1)}
+.say::after{content:"";position:absolute;left:50%;bottom:-7px;margin-left:-7px;border:7px solid transparent;border-top-color:var(--foam);border-bottom:0}
+@keyframes popin{from{transform:translate(-50%,-100%) scale(.6);opacity:0}}
+
+/* ---------- windows ---------- */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(18,9,5,.62);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:calc(12px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.win{position:relative;width:min(1040px,100%);max-height:100%;overflow-y:auto;background:var(--milk);color:var(--espresso);border-radius:28px;border:3px solid var(--espresso);box-shadow:10px 10px 0 var(--caramel);padding:clamp(18px,3vw,34px);animation:zoom .45s cubic-bezier(.3,1.4,.5,1)}
+@keyframes zoom{from{transform:scale(.4);opacity:0}}
+.win.dark{background:var(--slate);color:var(--foam)}
+.x{position:sticky;top:0;float:right;z-index:3;width:44px;height:44px;border-radius:50%;border:2px solid currentColor;background:inherit;cursor:pointer;font-size:18px;margin:-6px -6px 0 12px}
+.win h2{font-family:var(--f-display);font-size:clamp(34px,5vw,56px);line-height:1}
+.win .lede{font-size:17px;opacity:.8;margin-top:8px;max-width:56ch}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(18px,3vw,36px);margin-top:22px;align-items:start}
+@media (max-width:780px){.grid2{grid-template-columns:1fr}}
+
+/* machine */
+.mach > svg{width:100%;max-width:440px;height:auto;display:block;margin:0 auto;overflow:visible}
+.ctl{display:flex;flex-direction:column;gap:16px}
+.ctl .f{font-weight:800;font-size:13px;display:flex;flex-direction:column;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chips button{border:2px solid rgba(36,21,15,.15);background:var(--foam);border-radius:999px;padding:6px 13px;cursor:pointer;font-weight:700;font-size:14px}
+.chips button[aria-pressed="true"]{background:var(--espresso);color:var(--milk);border-color:var(--espresso)}
+.ctl input[type=text]{border:2px solid rgba(36,21,15,.15);background:#fff;border-radius:12px;padding:9px 12px;font-weight:600;color:var(--espresso)}
+.pumps{display:flex;align-items:center;gap:10px}
+.pumps button{width:36px;height:36px;border-radius:50%;border:2px solid var(--espresso);background:var(--foam);cursor:pointer;font-weight:800}
+.pumps .drops{display:flex;gap:4px}
+.pumps .drops i{width:14px;height:18px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:var(--caramel);display:inline-block}
+.brew{align-self:flex-start;background:var(--cherry);color:var(--foam);border:3px solid var(--espresso);border-radius:999px;padding:12px 26px;font-weight:800;font-size:18px;cursor:pointer;box-shadow:4px 4px 0 var(--espresso);transition:transform .1s,box-shadow .1s}
+.brew:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--espresso)}
+.brew[disabled]{opacity:.6;cursor:wait}
+.receipt{background:#fff;color:#222;font-family:var(--f-mono);font-size:13px;line-height:1.6;padding:18px 20px 26px;max-width:380px;box-shadow:0 14px 26px -16px rgba(0,0,0,.5);animation:print 1.2s steps(14);
+  -webkit-mask:radial-gradient(circle 7px at 50% 100%,transparent 98%,#000) bottom/16px 100% repeat-x;mask:radial-gradient(circle 7px at 50% 100%,transparent 98%,#000) bottom/16px 100% repeat-x}
+@keyframes print{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+.receipt h4{font-family:var(--f-display);font-size:22px;text-align:center}
+.receipt .c{text-align:center}
+.receipt hr{border:0;border-top:1px dashed #999;margin:8px 0}
+.receipt .row{display:flex;justify-content:space-between;gap:10px}
+.receipt .bars{height:34px;margin-top:10px;background:repeating-linear-gradient(90deg,#222 0 2px,transparent 2px 4px,#222 4px 7px,transparent 7px 8px,#222 8px 9px,transparent 9px 12px)}
+
+/* chalkboard */
+.board{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(18px,3vw,36px);margin-top:20px}
+@media (max-width:780px){.board{grid-template-columns:1fr}}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.filters button{border:2px dashed rgba(255,248,239,.35);background:transparent;border-radius:999px;padding:4px 14px;cursor:pointer;font-family:var(--f-chalk);font-size:21px;font-weight:700}
+.filters button[aria-pressed="true"]{border-style:solid;border-color:var(--caramel);color:var(--caramel)}
+.drinklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 18px;align-content:start}
+@media (max-width:480px){.drinklist{grid-template-columns:1fr}}
+.drinklist button{display:flex;align-items:baseline;gap:8px;border:0;background:none;cursor:pointer;padding:6px 4px;text-align:left;font-family:var(--f-chalk);font-size:25px;font-weight:700;line-height:1.1;border-radius:8px}
+.drinklist button .dots{flex:1;border-bottom:2px dotted rgba(255,248,239,.3);transform:translateY(-.25em);min-width:10px}
+.drinklist button small{font-size:18px;color:var(--caramel)}
+.drinklist button:hover,.drinklist button[aria-pressed="true"]{background:rgba(255,248,239,.07)}
+.drinklist button[aria-pressed="true"]{color:var(--caramel)}
+.detail{background:rgba(255,248,239,.05);border:2px dashed rgba(255,248,239,.25);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.detail .xs{display:flex;gap:16px;align-items:center}
+.detail .xs svg{width:140px;flex:none;overflow:visible}
+.detail h3{font-family:var(--f-chalk);font-size:40px;font-weight:700;line-height:1;color:var(--caramel)}
+.detail .take{font-family:var(--f-chalk);font-size:23px;line-height:1.2}
+.legend{display:flex;flex-direction:column;gap:6px;font-family:var(--f-chalk);font-size:20px}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend i{width:16px;height:16px;border-radius:4px;display:inline-block;border:1px solid rgba(255,255,255,.3)}
+
+/* orders */
+.rail{position:relative;padding-top:24px;margin-top:20px}
+.rail::before{content:"";position:absolute;left:0;right:0;top:10px;height:6px;border-radius:3px;background:linear-gradient(#b9b2aa,#8b847d)}
+.tickets{display:flex;flex-wrap:wrap;gap:18px 16px;padding:6px 4px 10px}
+.ticket{width:190px;background:#FFFDF8;color:#2a1a12;padding:20px 14px 16px;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;transform-origin:50% -14px;animation:sway 3s ease-in-out infinite alternate;box-shadow:0 12px 18px -12px rgba(0,0,0,.4);position:relative}
+.ticket:nth-child(2n){animation-delay:-1.3s}.ticket:nth-child(3n){animation-delay:-2s}
+.ticket::before{content:"";position:absolute;top:-15px;left:50%;width:16px;height:24px;margin-left:-8px;border-radius:4px;background:var(--mocha)}
+.ticket b{font-family:var(--f-display);font-weight:400;font-size:20px;display:block;line-height:1.1;margin:3px 0 5px}
+.ticket .n{color:var(--cherry);font-weight:700}
+.ticket.new{animation:pin .7s cubic-bezier(.3,1.6,.5,1),sway 3s .7s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}
+@keyframes pin{from{transform:translateY(-60px) rotate(-14deg);opacity:0}}
+.oform{background:var(--foam);border:2px solid var(--espresso);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.oform label{font-weight:800;font-size:13px;display:flex;flex-direction:column;gap:6px}
+.oform input,.oform select,.oform textarea{border:2px solid rgba(36,21,15,.15);background:#fff;border-radius:12px;padding:9px 12px;font-weight:500;width:100%;color:var(--espresso)}
+.oform textarea{min-height:70px;resize:vertical}
+.msgbox{border:2px dashed rgba(36,21,15,.25);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.email{font-family:var(--f-mono);font-size:13px;background:var(--espresso);color:var(--milk);border-radius:8px;padding:6px 10px;user-select:all;-webkit-user-select:all;overflow-wrap:anywhere}
+.toast{font-weight:800;color:var(--cherry);min-height:1.4em}
+
+/* quiz */
+.quiz{margin-top:22px;display:flex;flex-direction:column;gap:16px}
+.qbar{height:10px;border-radius:5px;background:rgba(36,21,15,.12);overflow:hidden}
+.qbar i{display:block;height:100%;background:var(--caramel);transition:width .4s}
+.qq{font-family:var(--f-display);font-size:clamp(24px,3.4vw,36px);line-height:1.05}
+.qopts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:600px){.qopts{grid-template-columns:1fr}}
+.qopts button{border:2px solid var(--espresso);background:var(--foam);border-radius:18px;padding:16px;cursor:pointer;font-weight:700;font-size:16px;text-align:left;display:flex;gap:12px;align-items:center;box-shadow:4px 4px 0 var(--espresso);transition:transform .1s,box-shadow .1s}
+.qopts button:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--espresso)}
+.qopts button span{font-size:28px}
+.result{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center;background:var(--espresso);color:var(--milk);border-radius:22px;padding:20px;animation:zoom .5s cubic-bezier(.3,1.4,.5,1)}
+@media (max-width:600px){.result{grid-template-columns:1fr}}
+.result svg{width:150px;overflow:visible;margin:0 auto}
+.result h3{font-family:var(--f-display);font-size:40px;line-height:1;color:var(--caramel)}
+
+/* latte */
+.latte-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:16px}
+.latte-wrap canvas{width:min(100%,460px,58vh);aspect-ratio:1;touch-action:none;cursor:crosshair;display:block}
+.latte-btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.latte-btns button{border:2px solid var(--espresso);background:var(--foam);border-radius:999px;padding:7px 14px;cursor:pointer;font-weight:800;font-size:14px}
+.latte-btns button:hover{background:var(--espresso);color:var(--milk)}
+
+/* radio + book + owner */
+.player{display:flex;gap:26px;align-items:center;flex-wrap:wrap;margin-top:20px}
+.vinyl{width:min(220px,60vw);aspect-ratio:1;border-radius:50%;flex:none;background:radial-gradient(circle,var(--caramel) 0 16%,var(--espresso) 17% 19%,transparent 20%),repeating-radial-gradient(circle,#140b07 0 2px,#22140d 2px 4px);box-shadow:0 14px 26px -10px rgba(0,0,0,.7);animation:spin 3s linear infinite;animation-play-state:paused}
+.vinyl.on{animation-play-state:running}
+.tracks{display:flex;flex-direction:column;gap:6px;flex:1;min-width:220px}
+.tracks button{display:flex;justify-content:space-between;gap:10px;border:2px solid rgba(36,21,15,.15);background:var(--foam);border-radius:14px;padding:10px 14px;cursor:pointer;text-align:left;font-weight:700;flex-wrap:wrap}
+.tracks button[aria-pressed="true"]{background:var(--espresso);color:var(--milk);border-color:var(--espresso)}
+.eq{display:flex;gap:4px;align-items:flex-end;height:40px;margin-top:16px}
+.eq i{flex:1;background:var(--caramel);border-radius:2px;height:15%}
+.eq.on i{animation:eq .9s ease-in-out infinite alternate}
+.eq.on i:nth-child(2n){animation-duration:.6s}.eq.on i:nth-child(3n){animation-duration:1.2s}.eq.on i:nth-child(4n){animation-duration:.75s}
+@keyframes eq{from{height:15%}to{height:100%}}
+.bookw{perspective:1200px;display:flex;justify-content:center;margin-top:20px}
+.bookc{position:relative;width:min(300px,80vw);aspect-ratio:3/4;border:0;padding:0;background:none;cursor:pointer}
+.bookc .inside{position:absolute;inset:0;background:#FFFDF8;color:var(--espresso);border-radius:4px 14px 14px 4px;padding:24px;display:flex;flex-direction:column;justify-content:center;gap:12px;text-align:left;box-shadow:inset 10px 0 18px -10px rgba(0,0,0,.25)}
+.bookc .inside b{font-family:var(--f-display);font-weight:400;font-size:26px;line-height:1}
+.bookc .inside p{font-family:var(--f-chalk);font-size:22px;line-height:1.2}
+.bookc .cov{position:absolute;inset:0;background:linear-gradient(135deg,#3F6E8C,#24485F);color:#fff;border-radius:4px 14px 14px 4px;transform-origin:left center;transition:transform 1s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;justify-content:space-between;padding:24px;text-align:left;box-shadow:0 18px 30px -12px rgba(0,0,0,.6);backface-visibility:hidden}
+.bookc .cov b{font-family:var(--f-display);font-weight:400;font-size:38px;line-height:1}
+.bookc.open .cov{transform:rotateY(-165deg)}
+.note{background:#FFFDF8;border-radius:6px;padding:24px;font-family:var(--f-chalk);font-size:25px;line-height:1.25;transform:rotate(-1.5deg);box-shadow:0 16px 26px -16px rgba(0,0,0,.5);position:relative}
+.note::before{content:"";position:absolute;top:-12px;left:50%;width:90px;height:26px;margin-left:-45px;background:rgba(224,149,62,.55);transform:rotate(3deg)}
+.punch{background:var(--foam);border:2px solid var(--espresso);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.holes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.holes button{aspect-ratio:1;border-radius:50%;border:2px dashed var(--mocha);background:transparent;cursor:pointer;display:grid;place-items:center;padding:0}
+.holes button.p{border-style:solid;background:var(--espresso)}
+.holes button.p::after{content:"";width:40%;height:58%;border-radius:50%;background:var(--caramel);transform:rotate(25deg)}
+.holes button:last-child{border-color:var(--cherry)}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.rush{position:relative;margin-top:18px;background:var(--forest);color:var(--milk);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:14px;overflow:hidden;min-height:480px}
+.rush-top{display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.rush-top b{color:var(--gold);font-size:17px}
+.timer{flex:1;min-width:120px;height:12px;background:rgba(255,248,239,.15);border-radius:6px;overflow:hidden}
+.timer i{display:block;height:100%;background:var(--matcha);width:100%;transition:background .3s}
+.timer i.low{background:var(--cherry)}
+.rush-main{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:center}
+@media (max-width:620px){.rush-main{grid-template-columns:1fr}}
+.cust{display:flex;flex-direction:column;gap:10px;min-width:0}
+.cust-row{display:flex;gap:12px;align-items:center}
+.face{font-size:54px;line-height:1}
+.face.bounce{animation:bounce .5s}
+.cbub{background:var(--foam);color:var(--espresso);border-radius:16px 16px 16px 4px;padding:10px 14px;font-weight:700;min-width:0}
+.tk{background:#FFFDF8;color:#2a1a12;font-family:var(--f-mono);font-size:12px;padding:12px;border-radius:4px;display:flex;flex-direction:column;gap:8px;transform:rotate(-1deg)}
+.tk b{font-family:var(--f-display);font-weight:400;font-size:22px;letter-spacing:0}
+.steps{display:flex;flex-wrap:wrap;gap:6px}
+.steps span{border:1.5px dashed #b9a99a;border-radius:999px;padding:3px 9px}
+.steps span.done{background:var(--matcha);border:1.5px solid var(--matcha);color:#1f2a0e}
+.steps span.hid{cursor:pointer;background:#efe7dd}
+.glassbox{display:flex;justify-content:center;position:relative}
+.glassbox svg{width:min(170px,42vw);height:auto;overflow:visible}
+.glassbox.spill{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-8px) rotate(-4deg)}40%,80%{transform:translateX(8px) rotate(4deg)}}
+@keyframes bounce{40%{transform:translateY(-12px) scale(1.12)}}
+.ings{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:8px}
+.ings button{border:2px solid rgba(255,248,239,.18);background:rgba(255,255,255,.06);border-radius:14px;padding:8px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;font-size:12.5px;transition:transform .1s,background .2s}
+.ings button span{font-size:24px}
+.ings button:hover{background:rgba(255,255,255,.14)}
+.ings button:active{transform:scale(.92)}
+.rush-ov{position:absolute;inset:0;background:rgba(22,59,48,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:20px;z-index:3}
+.rush-ov h3{font-family:var(--f-body);font-weight:800;text-transform:uppercase;font-size:clamp(34px,6vw,54px);color:#fff;line-height:1}
+.rush-ov .big{font-family:var(--f-display);font-size:64px;color:var(--gold);line-height:1}
+.rush-ov p{max-width:46ch;opacity:.88}
+.ptxt{position:absolute;left:50%;top:30%;font-family:var(--f-display);font-size:32px;color:var(--gold);pointer-events:none;animation:floatup 1s forwards;transform:translateX(-50%)}
+@keyframes floatup{to{transform:translate(-50%,-50px);opacity:0}}
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:90}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:0s!important}}
+</style>
+
+<main class="welcome" id="welcome">
+  <div class="blob a"></div><div class="blob b"></div><div class="blob c"></div><div class="blob d"></div><div class="blob e"></div>
+  <div class="beans-float" aria-hidden="true"><span class="fbean" style="left:44%;top:8%;width:26px;--r:20deg;animation-delay:0s"></span><span class="fbean" style="left:5%;top:84%;width:30px;--r:-30deg;animation-delay:-2.5s"></span><span class="fbean" style="left:92%;top:86%;width:22px;--r:40deg;animation-delay:-4.5s"></span></div>
+  <div class="w-copy">
+    <p class="kick">welcome to</p>
+    <h1 class="wtitle"><span>Café</span><span class="outline">Pawffee<i class="pawdot" id="pawdot" title="boop"><svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="26" rx="10" ry="8.5" fill="#E0953E"/><ellipse cx="8" cy="15" rx="4.2" ry="5.4" fill="#E0953E"/><ellipse cx="16" cy="8" rx="4.2" ry="5.6" fill="#E0953E"/><ellipse cx="25" cy="8" rx="4.2" ry="5.6" fill="#E0953E"/><ellipse cx="32.5" cy="15" rx="4.2" ry="5.4" fill="#E0953E"/></svg></i></span></h1>
+    <p class="wsub">a tiny café on the internet, run by yogashree and a very sleepy dog.</p>
+    <div class="wctas"><button class="wbtn enter" id="enterBtn">step inside <span class="door">→</span></button><button class="wbtn ghost" data-open="game">play barista rush</button></div>
+  </div>
+  <div class="w-cup">
+    <canvas id="wlatte" aria-label="latte art. drag on the cup to pour milk."></canvas>
+    <span class="hint">drag on the cup to pour your own latte art</span>
+    <div class="wl-btns" id="wlbtns"><button data-a="heart">heart</button><button data-a="tulip">tulip</button><button data-a="rosetta">rosetta</button><button data-a="paw">paw</button><button data-a="spin">spin</button><button data-a="sip">sip</button></div>
+  </div>
+</main>
+
+<div class="cafe" id="cafe" hidden>
+  <div class="topbar">
+    <span class="name">café pawffee</span>
+    <div class="hud"><div class="explored" title="corners explored"><div class="beans" id="exBeans"></div><span class="mono" id="exTxt">0/8 explored</span></div></div>
+  </div>
+  <div class="swipe">swipe to look around →</div>
+  <div class="scene-scroll" id="sceneScroll"><div class="scene" id="scene"></div></div>
+  <nav class="dock" id="dock" aria-label="jump to"></nav>
+</div>
+
+<div class="modal" id="modal" hidden><div class="win" id="win" role="dialog" aria-modal="true"></div></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<script>
+(function(){
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const EMAIL='yog.s00312@gmail.com';
+const $=s=>document.querySelector(s);
+const C={espresso:'#3B2116',dark:'#2A170F',water:'#4A2A1C',oat:'#E2CDAE',whole:'#F1E4D3',almond:'#EEDCC4',foam:'#FFF8EF',matcha:'#8FA84E',matchaMilk:'#C9D69B',choco:'#4A2A1C',whip:'#FFFDF8',caramel:'#E0953E',chai:'#C98B4F',chaiMilk:'#E3C4A0',icecream:'#FBF1DE',coldbrew:'#2E1A10'};
+let uid=0;
+
+/* ---------- drinks (shared by menu, machine, quiz) ---------- */
+const DRINKS=[
+  {k:'espresso',n:'espresso',t:'hot',L:[['espresso',1]],cup:'demi',ratio:'a single shot, about 1:2 coffee to water, pulled in 25–30 seconds',fact:'the word comes from italian for “pressed out”, which is exactly what the machine does to the coffee.',take:'short, strong, no small talk. respect.',legend:[['espresso','espresso']]},
+  {k:'cortado',n:'cortado',t:'hot',L:[['espresso',.5],['milk',.5]],cup:'small',ratio:'equal parts espresso and steamed milk',fact:'from the spanish “cortar”, to cut. the milk cuts the espresso’s edge.',take:'my deep-work drink. small enough to finish before it gets cold.',legend:[['espresso','espresso'],['milk','steamed milk']]},
+  {k:'cappuccino',n:'cappuccino',t:'hot',L:[['espresso',.33],['milk',.33],['foam',.34]],cup:'cup',ratio:'one third each: espresso, steamed milk, foam',fact:'named after the capuchin friars, whose brown robes matched the colour.',take:'a cloud with a coffee underneath. add cinnamon, trust me.',legend:[['espresso','espresso'],['milk','steamed milk'],['foam','milk foam']]},
+  {k:'flatwhite',n:'flat white',t:'hot',L:[['espresso',.4],['milk',.5],['foam',.1]],cup:'cup',ratio:'a double shot with a thin layer of velvety microfoam',fact:'australia and new zealand both claim to have invented it. the debate continues.',take:'stronger than a latte, smoother than a cappuccino. the middle child we love.',legend:[['espresso','double espresso'],['milk','steamed milk'],['foam','microfoam']]},
+  {k:'latte',n:'oat latte',t:'hot',L:[['espresso',.25],['milk',.6],['foam',.15]],cup:'glass',ratio:'one shot, lots of steamed milk, a little foam',fact:'“caffè latte” just means milk coffee in italian. order a “latte” in italy and you might get a glass of milk.',take:'my usual. oat milk, extra hot, latte art if you’re feeling generous.',legend:[['espresso','espresso'],['milk','steamed oat milk'],['foam','foam']],fav:1},
+  {k:'mocha',n:'mocha',t:'hot',L:[['choco',.2],['espresso',.25],['milk',.4],['whip',.15]],cup:'glass',ratio:'chocolate, espresso, steamed milk, whipped cream',fact:'named after the port of mocha in yemen, once a famous hub of the coffee trade.',take:'dessert pretending to be coffee. no notes.',legend:[['choco','chocolate'],['espresso','espresso'],['milk','steamed milk'],['whip','whipped cream']]},
+  {k:'americano',n:'americano',t:'hot',L:[['espresso',.35],['water',.65]],cup:'cup',ratio:'espresso topped with hot water',fact:'legend says american soldiers in italy watered down espresso to taste like coffee from home.',take:'iced on a hot day, hot on a long one.',legend:[['espresso','espresso'],['water','hot water']]},
+  {k:'icedlatte',n:'iced latte',t:'iced',L:[['milk',.6],['espresso',.4]],cup:'glass',ice:1,ratio:'espresso poured over ice and cold milk',fact:'pour the espresso last and watch it swirl down through the milk.',take:'the only correct drink for an nyc summer.',legend:[['milk','cold milk'],['espresso','espresso']]},
+  {k:'coldbrew',n:'cold brew',t:'iced',L:[['coldbrew',.85],['milk',.15]],cup:'glass',ice:1,ratio:'grounds steeped in cold water for 12 to 24 hours',fact:'cold brew is never heated, which keeps it smooth and less acidic.',take:'patience in a glass. worth the wait.',legend:[['coldbrew','cold brew'],['milk','splash of milk']]},
+  {k:'affogato',n:'affogato',t:'iced',L:[['icecream',.6],['espresso',.4]],cup:'small',ratio:'a scoop of vanilla gelato drowned in a hot shot',fact:'“affogato” means drowned in italian. the gelato never stood a chance.',take:'hot and cold at once. chaotic. perfect.',legend:[['icecream','vanilla gelato'],['espresso','espresso']]},
+  {k:'matcha',n:'matcha latte',t:'nocoffee',L:[['matchaMilk',.65],['matcha',.25],['foam',.1]],cup:'glass',ratio:'whisked matcha with steamed milk',fact:'matcha is the whole tea leaf ground to powder, so you drink the leaf itself.',take:'for afternoons when one more coffee would be a bad idea.',legend:[['matchaMilk','matcha milk'],['matcha','matcha'],['foam','foam']]},
+  {k:'chai',n:'chai latte',t:'nocoffee',L:[['chai',.35],['chaiMilk',.5],['foam',.15]],cup:'cup',ratio:'spiced black tea with steamed milk',fact:'chai simply means tea in hindi, so “chai tea” is technically “tea tea”.',take:'cardamom and ginger, always.',legend:[['chai','spiced tea'],['chaiMilk','steamed milk'],['foam','foam']]},
+];
+const col=(name,milk)=>name==='milk'?(milk||C.oat):C[name];
+function steam(x,y,on){ return `<g class="steam" fill="none" stroke="#FFF8EF" stroke-width="3.2" stroke-linecap="round" style="opacity:${on?1:0}"><path d="M${x-12} ${y} q-5 -8 0 -16 q5 -8 0 -16"/><path d="M${x} ${y-2} q-5 -8 0 -16 q5 -8 0 -16"/><path d="M${x+12} ${y} q-5 -8 0 -16 q5 -8 0 -16"/></g>`; }
+function cupSVG(d, opt={}){ // side view with visible layers
+  const id='c'+(uid++), milk=opt.milk; const fill=opt.fill??1; const layers=opt.layers||d.L;
+  const S={demi:{p:'M38 70 L42 118 Q60 126 78 118 L82 70Z',y0:72,y1:122,x:34,w:52,h:'M82 82 q14 0 14 12 q0 12 -14 12',vb:'0 0 120 140',sx:60,sy:52},
+    small:{p:'M34 56 L38 124 H82 L86 56Z',y0:58,y1:124,x:30,w:60,vb:'0 0 120 140',sx:60,sy:40},
+    cup:{p:'M24 52 L32 120 Q60 132 88 120 L96 52Z',y0:54,y1:126,x:20,w:80,h:'M95 66 q20 0 20 20 q0 20 -22 22',vb:'0 0 130 145',sx:60,sy:36},
+    glass:{p:'M30 26 L36 132 H84 L90 26Z',y0:28,y1:132,x:26,w:68,vb:'0 0 120 145',sx:60,sy:14}}[d.cup];
+  let y=S.y1, rects=''; const H=(S.y1-S.y0)*fill;
+  layers.forEach(([c,f])=>{ const h=Math.min((S.y1-S.y0)*f, H-(S.y1-y)); if(h<=0) return; y-=h; rects+=`<rect x="${S.x}" y="${y}" width="${S.w}" height="${h+.6}" fill="${col(c,milk)}"/>`; });
+  const ice = (opt.ice ?? d.ice) && fill>.35 ? `<rect x="${S.x+14}" y="${S.y1-58}" width="15" height="15" rx="3" fill="rgba(255,255,255,.5)" transform="rotate(14 ${S.x+21} ${S.y1-50})"/><rect x="${S.x+34}" y="${S.y1-38}" width="14" height="14" rx="3" fill="rgba(255,255,255,.45)"/>`:'';
+  const cin = opt.cinnamon && fill>.6 ? Array.from({length:10},(_,i)=>`<circle cx="${S.x+8+i*5.5}" cy="${y+2+(i%3)}" r="1.4" fill="#8A4B22"/>`).join(''):'';
+  const glassy = d.cup==='glass'||d.cup==='small';
+  const top = layers.length ? col(layers[layers.length-1][0],milk) : C.espresso;
+  return `<svg viewBox="${S.vb}" aria-hidden="true">${steam(S.sx,S.sy,opt.steam && d.t==='hot')}
+    <ellipse cx="60" cy="${S.y1+8}" rx="44" ry="5" fill="rgba(0,0,0,.25)"/>
+    ${S.h?`<path d="${S.h}" fill="none" stroke="${glassy?'rgba(255,248,239,.9)':'#FFF8EF'}" stroke-width="7"/>`:''}
+    <defs><clipPath id="${id}"><path d="${S.p}"/></clipPath></defs>
+    ${glassy?'':`<path d="${S.p}" fill="#FFF8EF"/>`}
+    ${glassy?`<g clip-path="url(#${id})">${rects}${ice}${cin}</g><path d="${S.p}" fill="rgba(255,248,239,.1)" stroke="rgba(255,248,239,.95)" stroke-width="3" stroke-linejoin="round"/><path d="M${S.x+12} ${S.y0+10} L${S.x+15} ${S.y1-10}" stroke="rgba(255,255,255,.4)" stroke-width="3.5" stroke-linecap="round"/>`
+      :`<ellipse cx="60" cy="${S.y0}" rx="${S.w/2-2}" ry="6" fill="${top}"/>${cin}`}
+  </svg>`;
+}
+
+/* ---------- café scene ---------- */
+const SPOTS=[
+  {k:'machine',l:'the coffee machine',i:'☕'},
+  {k:'menu',l:'the menu board',i:'📋'},
+  {k:'orders',l:'the order counter',i:'🧾'},
+  {k:'quiz',l:'the bean jars',i:'🫙'},
+  {k:'game',l:'barista rush game',i:'🔔'},
+  {k:'radio',l:'the record player',i:'🎶'},
+  {k:'book',l:'a book someone left',i:'📖'},
+  {k:'owner',l:'the owner',i:'👋'},
+];
+const seen=new Set();
+function hot(k, inner, px, py, lx, ly){ const s=SPOTS.find(x=>x.k===k); return `<g class="hot" data-open="${k}" tabindex="0" role="button" aria-label="open ${s.l}"><g class="obj">${inner}</g><circle class="ping" cx="${px}" cy="${py}" r="12"/><text class="label" x="${lx??px}" y="${ly??py-26}" text-anchor="middle">${s.l}</text></g>`; }
+function sceneSVG(){
+  const tiles=[]; for(let r=0;r<4;r++) for(let c=0;c<27;c++) if((r+c)%2) tiles.push(`<rect x="${c*60}" y="${780+r*30}" width="60" height="30" fill="#3A2318"/>`);
+  return `<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet" role="img" aria-label="inside café pawffee">
+  <rect width="1600" height="900" fill="#EAD9C3"/>
+  <rect y="0" width="1600" height="16" fill="#C8452F"/>
+  ${Array.from({length:40},(_,i)=>`<rect x="${i*40}" y="16" width="20" height="10" fill="#E0953E"/>`).join('')}
+  <rect y="520" width="1600" height="260" fill="#6B4130"/>
+  ${Array.from({length:12},(_,i)=>`<rect x="${20+i*134}" y="545" width="110" height="210" rx="6" fill="none" stroke="#5A3627" stroke-width="5"/>`).join('')}
+  <rect y="510" width="1600" height="14" fill="#4E2E20"/>
+  <rect y="780" width="1600" height="120" fill="#F4EADF"/>${tiles.join('')}
+
+  <g><rect x="70" y="110" width="330" height="360" rx="14" fill="#24150F"/>
+    <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6C98E"/><stop offset="1" stop-color="#F7E6CF"/></linearGradient><clipPath id="winclip"><rect x="86" y="126" width="298" height="328" rx="6"/></clipPath></defs>
+    <g clip-path="url(#winclip)"><rect x="86" y="126" width="298" height="328" fill="url(#sky)"/>
+      <circle cx="300" cy="200" r="34" fill="#FFF3DC"/>
+      <g class="cloud"><ellipse cx="120" cy="190" rx="40" ry="14" fill="#fff" opacity=".8"/><ellipse cx="150" cy="182" rx="26" ry="14" fill="#fff" opacity=".8"/></g>
+      <path d="M86 454 V360 H120 V310 H150 V380 H176 V280 H200 V250 H210 V280 H232 V340 H262 V300 H296 V372 H330 V320 H352 V390 H384 V454Z" fill="#8E5A3E"/>
+      <path d="M86 454 V400 H140 V372 H190 V410 H250 V384 H310 V414 H384 V454Z" fill="#6B4130"/>
+      ${Array.from({length:14},(_,i)=>`<rect x="${125+(i%7)*36}" y="${330+Math.floor(i/7)*30}" width="6" height="8" fill="#FFE2A8" opacity=".9"/>`).join('')}</g>
+    <rect x="232" y="126" width="6" height="328" fill="#24150F"/><rect x="86" y="288" width="298" height="6" fill="#24150F"/>
+    <rect x="58" y="466" width="354" height="18" rx="5" fill="#4E2E20"/>
+    <path d="M110 466 q-6 -40 10 -60 q8 26 -2 60Z M122 466 q10 -50 34 -58 q-10 30 -26 58Z" fill="#7E9A46"/><rect x="104" y="440" width="36" height="28" rx="4" fill="#C8452F"/>
+  </g>
+  <text x="235" y="80" text-anchor="middle" font-family="Shrikhand, Georgia, serif" font-size="40" fill="#E0953E" style="filter:drop-shadow(0 0 8px rgba(224,149,62,.8))">open</text>
+
+  ${[850,1010].map((x,i)=>`<g class="lamp" style="transform-origin:${x}px 26px;animation-delay:${-i*1.3}s"><line x1="${x}" y1="26" x2="${x}" y2="120" stroke="#24150F" stroke-width="3"/><path d="M${x-34} 150 Q${x} 104 ${x+34} 150Z" fill="#24150F"/><circle cx="${x}" cy="154" r="10" fill="#FFE2A8"/><ellipse cx="${x}" cy="170" rx="60" ry="22" fill="#FFE2A8" opacity=".18"/></g>`).join('')}
+
+  ${hot('menu',`<g transform="translate(70 -110) scale(.9)"><rect x="455" y="180" width="350" height="290" rx="10" fill="#8E5A3E"/><rect x="470" y="195" width="320" height="260" rx="6" fill="#2C302E"/>
+    <text x="630" y="250" text-anchor="middle" font-family="Caveat, cursive" font-weight="700" font-size="48" fill="#FFF8EF">menu</text>
+    <path d="M520 262 q110 10 220 0" stroke="#E0953E" stroke-width="3" fill="none"/>
+    ${['espresso','cortado','cappuccino','oat latte ★','cold brew'].map((t,i)=>`<text x="500" y="${298+i*32}" font-family="Caveat, cursive" font-size="27" fill="#FFF8EF" opacity=".9">${t}</text><text x="760" y="${298+i*32}" text-anchor="end" font-family="Caveat, cursive" font-size="25" fill="#E0953E">♡</text>`).join('')}</g>`,790,60,630,40)}
+
+  ${hot('quiz',`<rect x="1060" y="300" width="460" height="16" rx="4" fill="#4E2E20"/><path d="M1090 316 l20 30 M1490 316 l-20 30" stroke="#4E2E20" stroke-width="8"/>
+    ${[['#E0953E',1080],['#C8452F',1160],['#9DB35E',1240],['#6B4130',1320],['#F4EADF',1400]].map(([c,x])=>`<g><rect x="${x+14}" y="196" width="32" height="16" rx="3" fill="#24150F"/><path d="M${x} 222 Q${x} 210 ${x+14} 210 H${x+46} Q${x+60} 210 ${x+60} 222 V292 Q${x+60} 300 ${x+50} 300 H${x+10} Q${x} 300 ${x} 292Z" fill="${c}" opacity=".9"/>
+      ${Array.from({length:6},(_,j)=>{const ex=x+12+(j%3)*18, ey=262+Math.floor(j/3)*18; return `<ellipse cx="${ex}" cy="${ey}" rx="5" ry="7" fill="#3A2318" transform="rotate(25 ${ex} ${ey})"/>`;}).join('')}
+      <rect x="${x+10}" y="226" width="40" height="18" rx="3" fill="#FFF8EF"/></g>`).join('')}
+    <text x="1290" y="180" text-anchor="middle" font-family="Caveat, cursive" font-weight="700" font-size="30" fill="#6B4130">what’s your coffee personality?</text>`,1500,200,1290,145)}
+  <rect x="1060" y="420" width="460" height="14" rx="4" fill="#4E2E20"/>
+  ${[1090,1150,1210,1270].map((x,i)=>`<path d="M${x} 386 H${x+40} L${x+36} 420 H${x+4}Z" fill="${['#FFF8EF','#E0953E','#FFF8EF','#C8452F'][i]}"/>`).join('')}
+  <path d="M1400 420 q-30 -60 0 -90 q30 30 0 90Z M1400 420 q-60 -30 -60 -70 q40 10 60 70Z M1400 420 q60 -30 60 -70 q-40 10 -60 70Z" fill="#7E9A46"/><rect x="1380" y="398" width="40" height="24" rx="4" fill="#6B4130"/>
+
+  ${hot('owner',`<g transform="translate(860 300)">
+    <path d="M40 70 Q38 24 90 24 Q142 24 140 70 L144 130 Q90 142 36 130Z" fill="#24150F"/><circle cx="90" cy="16" r="16" fill="#24150F"/>
+    <rect x="80" y="104" width="20" height="20" fill="#D6A98C"/>
+    <path d="M30 128 Q90 112 150 128 L162 250 H18Z" fill="#C8452F"/><path d="M62 136 H118 V250 H62Z" fill="#FFF8EF"/>
+    <text x="90" y="186" text-anchor="middle" font-family="Shrikhand, Georgia, serif" font-size="18" fill="#C8452F">ys</text>
+    <g class="wave" style="transform-box:fill-box;transform-origin:0% 100%"><path d="M146 136 Q170 110 176 80" stroke="#C8452F" stroke-width="18" fill="none" stroke-linecap="round"/><circle cx="177" cy="72" r="10" fill="#D6A98C"/></g>
+    <path d="M34 136 Q14 170 30 200" stroke="#C8452F" stroke-width="18" fill="none" stroke-linecap="round"/>
+    <ellipse cx="90" cy="72" rx="38" ry="42" fill="#D6A98C"/>
+    <path d="M52 70 Q52 32 90 32 Q128 32 128 70 Q120 50 100 48 Q88 58 68 54 Q58 60 52 70Z" fill="#24150F"/>
+    <g class="blink"><ellipse cx="76" cy="78" rx="4" ry="5.5" fill="#24150F"/><ellipse cx="104" cy="78" rx="4" ry="5.5" fill="#24150F"/></g>
+    <circle cx="66" cy="90" r="6" fill="#C8452F" opacity=".35"/><circle cx="114" cy="90" r="6" fill="#C8452F" opacity=".35"/>
+    <path d="M80 96 Q90 105 100 96" stroke="#24150F" stroke-width="3" fill="none" stroke-linecap="round"/></g>`,1050,330)}
+
+  <rect x="360" y="548" width="1180" height="26" rx="6" fill="#A0673F"/>
+  <rect x="380" y="574" width="1140" height="210" fill="#24150F"/>
+  ${Array.from({length:19},(_,i)=>`<rect x="${392+i*60}" y="590" width="36" height="176" rx="18" fill="#341F16"/>`).join('')}
+  <text x="950" y="700" text-anchor="middle" font-family="Shrikhand, Georgia, serif" font-size="54" fill="#E0953E">café pawffee</text>
+
+  ${hot('machine',`<g transform="translate(470 336)">
+    <rect x="10" y="0" width="250" height="16" rx="5" fill="#B9B2AA"/><path d="M40 -26 H66 L62 0 H44Z M84 -26 H110 L106 0 H88Z" fill="#FFF8EF" stroke="#24150F" stroke-width="2"/>
+    <rect x="0" y="16" width="270" height="196" rx="22" fill="#C8452F"/><rect x="0" y="16" width="270" height="56" rx="22" fill="#A93824"/>
+    <circle cx="44" cy="44" r="18" fill="#FFF8EF" stroke="#D9D2CA" stroke-width="4"/><line x1="44" y1="44" x2="54" y2="34" stroke="#C8452F" stroke-width="3"/>
+    <rect x="86" y="30" width="100" height="28" rx="5" fill="#1A0F0A"/><text x="136" y="49" text-anchor="middle" font-family="Space Mono, monospace" font-size="12" fill="#E0953E">ready</text>
+    <rect x="50" y="84" width="170" height="124" rx="14" fill="#8E2F1E"/>
+    <rect x="105" y="84" width="60" height="24" rx="6" fill="#D9D2CA"/><rect x="40" y="110" width="130" height="12" rx="6" fill="#3A2318"/>
+    <path d="M120 150 L124 200 H146 L150 150Z" fill="rgba(255,248,239,.2)" stroke="#FFF8EF" stroke-width="3"/><rect x="126" y="176" width="20" height="24" fill="#6B3F2A"/>
+    <path d="M238 84 V170 Q238 182 226 184" stroke="#D9D2CA" stroke-width="7" fill="none" stroke-linecap="round"/>
+    ${steam(135,140,true)}</g>`,740,350)}
+
+  ${hot('orders',`<g transform="translate(1180 380)">
+    <rect x="-10" y="-40" width="300" height="6" rx="3" fill="#8b847d"/>
+    ${[0,1,2].map(i=>`<g transform="rotate(${[-4,3,-2][i]} ${30+i*90} -36)"><rect x="${8+i*90}" y="-34" width="70" height="86" fill="#FFFDF8"/><rect x="${36+i*90}" y="-42" width="14" height="14" rx="3" fill="#6B4130"/>${[0,1,2,3].map(j=>`<rect x="${16+i*90}" y="${-18+j*14}" width="${[50,36,44,28][j]}" height="4" fill="#C9BBA9"/>`).join('')}</g>`).join('')}
+    <path d="M40 168 L56 98 H200 L216 168Z" fill="#E0953E"/><rect x="74" y="108" width="108" height="30" rx="5" fill="#1A0F0A"/><text x="128" y="129" text-anchor="middle" font-family="Space Mono, monospace" font-size="14" fill="#9DB35E">order ♥</text>
+    ${[0,1,2,3].map(j=>`<rect x="${78+j*26}" y="146" width="18" height="10" rx="2" fill="#FFF8EF"/>`).join('')}</g>`,1420,330)}
+
+  ${hot('radio',`<g transform="translate(1410 492)"><rect x="0" y="20" width="120" height="40" rx="8" fill="#6B4130"/><ellipse cx="54" cy="24" rx="44" ry="12" fill="#1A0F0A"/><ellipse cx="54" cy="24" rx="12" ry="4" fill="#E0953E"/><path d="M104 10 L84 26" stroke="#B9B2AA" stroke-width="5" stroke-linecap="round"/>
+    <text x="120" y="0" font-family="Caveat, cursive" font-size="34" fill="#6B4130">♪</text><text x="96" y="-14" font-family="Caveat, cursive" font-size="26" fill="#6B4130">♫</text></g>`,1555,470,1470,440)}
+
+  <g><ellipse cx="300" cy="870" rx="110" ry="10" fill="rgba(0,0,0,.2)"/><rect x="292" y="720" width="16" height="150" fill="#24150F"/><rect x="250" y="860" width="100" height="10" rx="4" fill="#24150F"/>
+    <ellipse cx="300" cy="720" rx="170" ry="34" fill="#A0673F"/><ellipse cx="300" cy="714" rx="170" ry="30" fill="#C08350"/></g>
+  <g><ellipse cx="240" cy="706" rx="54" ry="16" fill="#FFF8EF"/><path d="M206 670 H274 L268 702 Q240 712 212 702Z" fill="#FFF8EF"/><path d="M272 678 q16 0 16 10 q0 10 -18 12" fill="none" stroke="#FFF8EF" stroke-width="6"/>
+    <ellipse cx="240" cy="670" rx="34" ry="8" fill="#7A4A2C"/><path d="M240 666 c-6 -6 -14 -3 -10 3 l10 6 l10 -6 c4 -6 -4 -9 -10 -3z" fill="#FFF8EF"/>${steam(240,656,true)}</g>
+  ${hot('game',`<g transform="translate(762 488)"><rect x="-4" y="52" width="84" height="10" rx="4" fill="#163B30"/><g class="bellring"><path d="M8 54 Q8 14 38 12 Q68 14 68 54Z" fill="#E0B44C"/><path d="M18 46 Q20 26 34 22" stroke="#FFF3C4" stroke-width="5" fill="none" stroke-linecap="round"/></g><circle cx="38" cy="8" r="7" fill="#E0B44C"/><text x="38" y="-14" text-anchor="middle" font-family="Caveat, cursive" font-weight="700" font-size="26" fill="#6B4130">ding!</text></g>`,820,470,800,440)}
+  ${hot('book',`<g><path d="M320 706 L400 692 L420 712 L340 728Z" fill="#24485F"/><path d="M320 706 L340 728 L340 734 L320 712Z" fill="#1a3546"/><path d="M340 728 L420 712 L420 718 L340 734Z" fill="#FFFDF8"/></g>`,430,680,400,650)}
+
+  <g id="dog" tabindex="0" role="button" aria-label="pet the café dog" style="cursor:pointer">
+    <path d="M318 468 Q312 430 352 426 Q394 424 398 466Z" fill="#C98A4B"/>
+    <path d="M396 466 q20 -4 18 -20" stroke="#C98A4B" stroke-width="9" fill="none" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="0 396 466;-14 396 466;0 396 466" dur="1.4s" repeatCount="indefinite"/></path>
+    <ellipse cx="350" cy="462" rx="22" ry="8" fill="#E3B98A"/>
+    <ellipse cx="302" cy="454" rx="24" ry="20" fill="#C98A4B"/>
+    <ellipse cx="284" cy="462" rx="13" ry="9" fill="#E3B98A"/><ellipse cx="274" cy="459" rx="5" ry="4" fill="#24150F"/>
+    <path d="M300 438 Q322 432 324 456 Q326 474 314 474 Q306 460 300 438Z" fill="#6B4130"/>
+    <path d="M288 452 q4 3 8 0" stroke="#24150F" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <circle cx="306" cy="470" r="5" fill="#C8452F"/><circle cx="306" cy="471" r="2.2" fill="#E0953E"/>
+    <text x="330" y="414" font-family="Caveat, cursive" font-weight="700" font-size="26" fill="#6B4130">z<animate attributeName="opacity" values="0;1;0" dur="2.4s" repeatCount="indefinite"/></text>
+    <text x="350" y="396" font-family="Caveat, cursive" font-weight="700" font-size="34" fill="#6B4130">z<animate attributeName="opacity" values="0;0;1;0" dur="2.4s" repeatCount="indefinite"/></text>
+  </g>
+  <g id="exitSign" tabindex="0" role="button" aria-label="leave the café" style="cursor:pointer"><rect x="1450" y="50" width="120" height="50" rx="8" fill="#24150F"/><text x="1510" y="84" text-anchor="middle" font-family="Space Mono, monospace" font-weight="700" font-size="22" fill="#9DB35E">exit →</text></g>
+  </svg>`;
+}
+
+/* ---------- welcome → café ---------- */
+const welcome=$('#welcome'), cafe=$('#cafe');
+function enter(e){ const src=(e&&e.currentTarget)||document.querySelector('.enter'); const r=src.getBoundingClientRect(); const x=r.left+r.width/2, y=r.top+r.height/2;
+  cafe.hidden=false; if(reduce){ welcome.hidden=true; greet(); return; }
+  cafe.style.clipPath=`circle(0px at ${x}px ${y}px)`; cafe.getBoundingClientRect();
+  cafe.style.clipPath=`circle(${Math.hypot(innerWidth,innerHeight)}px at ${x}px ${y}px)`;
+  setTimeout(()=>{ welcome.hidden=true; cafe.style.clipPath=''; greet(); },1000); }
+function greet(){ const own=document.querySelector('.scene [data-open="owner"] .obj'); if(!own) return; const r=own.getBoundingClientRect(); if(r.width) sayAt(r.left+r.width/2, r.top+4, 'welcome to café pawffee! click anything ☕'); }
+function leave(){ closeWin(); welcome.hidden=false; const x=innerWidth/2, y=innerHeight/2;
+  if(reduce){ cafe.hidden=true; return; } cafe.style.clipPath=`circle(${Math.hypot(innerWidth,innerHeight)}px at ${x}px ${y}px)`; cafe.getBoundingClientRect(); cafe.style.clipPath=`circle(0px at ${x}px ${y}px)`; setTimeout(()=>{ cafe.hidden=true; cafe.style.clipPath=''; },1000); }
+document.querySelectorAll('.enter').forEach(b=>b.addEventListener('click',enter));
+
+$('#scene').innerHTML=sceneSVG();
+$('#dock').innerHTML=SPOTS.map(s=>`<button data-open="${s.k}" title="${s.l}" aria-label="open ${s.l}">${s.i}</button>`).join('');
+$('#exBeans').innerHTML=SPOTS.map(()=>'<i></i>').join('');
+function markSeen(k){ if(seen.has(k)) return; seen.add(k);
+  document.querySelectorAll(`[data-open="${k}"]`).forEach(el=>el.classList.add('seen'));
+  [...$('#exBeans').children].forEach((b,i)=>b.classList.toggle('on',i<seen.size)); $('#exTxt').textContent=`${seen.size}/8 explored`;
+  if(seen.size===8) setTimeout(()=>{ confetti(innerWidth/2,innerHeight/2,180); sayAt(innerWidth/2,innerHeight*.3,'you explored the whole café! this coffee’s on me ☕'); },600); }
+document.addEventListener('click',e=>{ const t=e.target.closest('[data-open]'); if(t && !t.closest('#win')){ if(t.dataset.drink) md=+t.dataset.drink; openWin(t.dataset.open, e); } });
+document.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ') && e.target.matches && e.target.matches('.hot,#exitSign,#dog')){ e.preventDefault(); e.target.dispatchEvent(new MouseEvent('click',{bubbles:true})); } });
+$('#exitSign').addEventListener('click',leave);
+const DOG=['woof!','*tail wags*','is that a pup cup?','five more minutes','*sniffs your latte*','good human. very good.'];
+let dogI=0; $('#dog').addEventListener('click',()=>{ const r=$('#dog').getBoundingClientRect(); sayAt(r.left+r.width/2, r.top, DOG[dogI++%DOG.length]); });
+function sayAt(x,y,txt){ const d=document.createElement('div'); d.className='say'; d.style.left=Math.min(innerWidth-130,Math.max(130,x))+'px'; d.style.top=Math.max(70,y)+'px'; d.textContent=txt; document.body.appendChild(d); setTimeout(()=>d.remove(),2800); }
+
+/* ---------- windows ---------- */
+const modal=$('#modal'), win=$('#win'); let lastFocus=null, cleanup=null;
+function openWin(k,e){ if(!VIEWS[k]) return; lastFocus=document.activeElement; markSeen(k);
+  if(typeof cleanup==='function') cleanup(); cleanup=null;
+  win.className='win'+(k==='menu'?' dark':''); win.innerHTML=`<button class="x" id="wx" aria-label="close">✕</button>`+VIEWS[k].html();
+  win.setAttribute('aria-label',SPOTS.find(s=>s.k===k)?.l||k);
+  modal.hidden=false; win.scrollTop=0; win.style.animation='none'; win.offsetWidth; win.style.animation='';
+  $('#wx').onclick=closeWin; $('#wx').focus({preventScroll:true});
+  cleanup = VIEWS[k].mount ? VIEWS[k].mount() : null; }
+function closeWin(){ if(modal.hidden) return; modal.hidden=true; if(typeof cleanup==='function') cleanup(); cleanup=null; if(lastFocus && lastFocus.focus) lastFocus.focus({preventScroll:true}); }
+modal.addEventListener('click',e=>{ if(e.target===modal) closeWin(); });
+addEventListener('keydown',e=>{ if(e.key==='Escape') closeWin(); });
+function swapTo(k,pre){ if(pre) pre(); openWin(k); }
+
+const VIEWS={};
+
+/* machine */
+const M={d:4,size:1,milk:'oat',pumps:0,extras:new Set(),name:''};
+const MILK={oat:C.oat,whole:C.whole,almond:C.almond,none:null};
+const LINES={espresso:'short, strong, no small talk. respect.',cortado:'a person of balance. i like you.',cappuccino:'cloud enthusiast. excellent taste.',flatwhite:'quietly sophisticated. noted.',latte:'my usual too. we should get coffee.',mocha:'dessert first. correct.',americano:'classic and dependable. probably always on time.',icedlatte:'iced, even in november? icon.',coldbrew:'patient people make the best coffee.',affogato:'chaos and gelato. a legend.',matcha:'green and serene. love that for you.',chai:'cardamom gang, welcome.'};
+function machineLayers(){ const d=DRINKS[M.d]; let L=d.L.map(l=>[...l]);
+  if(M.milk==='none') L=L.map(([c,f])=>[c==='milk'||c==='foam'?'water':c,f]);
+  if(M.extras.has('extra shot')) L=L.map(([c,f])=>[c,c==='espresso'?f*1.6:f]);
+  if(M.pumps) L.unshift(['caramel',.05*M.pumps]);
+  if(M.extras.has('whipped cream') && !L.some(l=>l[0]==='whip')) L.push(['whip',.14]);
+  const tot=L.reduce((a,l)=>a+l[1],0); return L.map(([c,f])=>[c,f/tot]); }
+function machineCup(fill){ const d=DRINKS[M.d]; const cup=cupSVG({...d,cup:'glass'},{layers:machineLayers(),milk:MILK[M.milk],fill:fill*[.72,.86,1][M.size],ice:d.ice||M.extras.has('ice'),cinnamon:M.extras.has('cinnamon')&&fill>=1});
+  return cup.replace(/^<svg[^>]*>/,'').replace(/<\/svg>\s*$/,''); }
+function machineView(){ const d=DRINKS[M.d];
+  return `<svg viewBox="0 0 420 470" role="img" aria-label="espresso machine">
+    <ellipse cx="210" cy="458" rx="190" ry="10" fill="rgba(36,21,15,.18)"/>
+    <rect x="70" y="20" width="280" height="8" rx="4" fill="#B9B2AA"/>
+    <rect x="40" y="28" width="340" height="410" rx="30" fill="#C8452F"/><rect x="40" y="28" width="340" height="96" rx="30" fill="#A93824"/><rect x="40" y="96" width="340" height="28" fill="#A93824"/>
+    <circle cx="98" cy="76" r="28" fill="#FFF8EF" stroke="#D9D2CA" stroke-width="5"/>
+    <g id="needle" style="transform-origin:98px 76px;transition:transform .8s cubic-bezier(.3,1.6,.5,1);transform:rotate(-120deg)"><line x1="98" y1="76" x2="98" y2="56" stroke="#C8452F" stroke-width="3" stroke-linecap="round"/><circle cx="98" cy="76" r="4" fill="#24150F"/></g>
+    <rect x="150" y="52" width="150" height="46" rx="8" fill="#1A0F0A"/>
+    <text id="scr1" x="225" y="74" text-anchor="middle" font-family="Space Mono, monospace" font-size="12" fill="#E0953E">${d.n}</text>
+    <text id="scr2" x="225" y="90" text-anchor="middle" font-family="Space Mono, monospace" font-size="9" fill="#9DB35E">${['small','medium','large'][M.size]} · ${M.milk==='none'?'no':M.milk} milk</text>
+    <circle id="lamp" cx="338" cy="64" r="9" fill="#5a1d12"/>
+    <rect x="80" y="144" width="260" height="250" rx="22" fill="#8E2F1E"/>
+    <rect x="170" y="144" width="80" height="34" rx="8" fill="#D9D2CA"/>
+    <g id="porta" style="transform-origin:210px 190px;transition:transform .4s cubic-bezier(.3,1.6,.5,1);cursor:pointer"><rect x="170" y="184" width="80" height="16" rx="6" fill="#B9B2AA"/><rect x="66" y="186" width="112" height="14" rx="7" fill="#3A2318"/><rect x="198" y="200" width="8" height="10" fill="#9a938c"/><rect x="214" y="200" width="8" height="10" fill="#9a938c"/></g>
+    <rect id="st1" x="200" y="210" width="4" height="0" fill="#5A341F"/><rect id="st2" x="216" y="210" width="4" height="0" fill="#5A341F"/>
+    <svg id="mcup" x="150" y="226" width="120" height="145" viewBox="0 0 120 145">${machineCup(0)}</svg>
+    <rect x="96" y="368" width="228" height="18" rx="5" fill="#B9B2AA"/>
+    <g id="wand" style="cursor:pointer"><path d="M352 154 V280 Q352 298 336 302" fill="none" stroke="#D9D2CA" stroke-width="9" stroke-linecap="round"/><rect x="340" y="134" width="24" height="26" rx="6" fill="#3A2318"/><g id="puff" opacity="0"><circle cx="330" cy="298" r="9" fill="#FFF8EF"/><circle cx="318" cy="284" r="13" fill="#FFF8EF" opacity=".7"/><circle cx="302" cy="268" r="16" fill="#FFF8EF" opacity=".45"/></g></g>
+    <text x="210" y="422" text-anchor="middle" font-family="Shrikhand, Georgia, serif" font-size="22" fill="#FFF8EF">café pawffee</text>
+  </svg>`; }
+VIEWS.machine={html:()=>`<h2>the coffee machine</h2><p class="lede">build any drink you like, then hit brew. the handle and the steam wand do things too.</p>
+  <div class="grid2"><div class="mach" id="mach"></div><div class="ctl" id="ctl"></div></div>`,
+  mount(){ let busy=false, alive=true; const ctl=$('#ctl');
+    const draw=()=>{ $('#mach').innerHTML=machineView(); $('#porta').onclick=()=>{ const p=$('#porta'); p.dataset.l=p.dataset.l?'':'1'; p.style.transform=p.dataset.l?'rotate(-7deg)':'none'; $('#scr1').textContent=p.dataset.l?'locked in':'unlocked'; $('#scr2').textContent=p.dataset.l?'nice wrist':'ready'; };
+      $('#wand').onclick=()=>{ $('#puff').animate([{opacity:0,transform:'translate(0,0)'},{opacity:1,offset:.2},{opacity:0,transform:'translate(-16px,-34px)'}],{duration:1400,easing:'ease-out'}); $('#scr1').textContent='psssshhh'; $('#scr2').textContent='steaming milk'; }; };
+    const panel=()=>{ ctl.innerHTML=`
+      <div class="f">drink<div class="chips">${DRINKS.map((d,i)=>`<button data-d="${i}" aria-pressed="${i===M.d}">${d.n}</button>`).join('')}</div></div>
+      <div class="f">size<div class="chips">${['small','medium','large'].map((s,i)=>`<button data-s="${i}" aria-pressed="${i===M.size}">${s}</button>`).join('')}</div></div>
+      <div class="f">milk<div class="chips">${Object.keys(MILK).map(m=>`<button data-m="${m}" aria-pressed="${m===M.milk}">${m==='none'?'no milk':m}</button>`).join('')}</div></div>
+      <div class="f">caramel pumps<div class="pumps"><button data-p="-1" aria-label="fewer pumps">−</button><div class="drops">${Array.from({length:M.pumps},()=>'<i></i>').join('')||'<span style="opacity:.6;font-weight:600">none</span>'}</div><button data-p="1" aria-label="more pumps">+</button></div></div>
+      <div class="f">extras<div class="chips">${['extra shot','cinnamon','whipped cream','ice'].map(x=>`<button data-x="${x}" aria-pressed="${M.extras.has(x)}">${M.extras.has(x)?'✓ ':'+ '}${x}</button>`).join('')}</div></div>
+      <label class="f" for="cupname">name for the cup<input type="text" id="cupname" maxlength="24" placeholder="your name" value="${M.name.replace(/"/g,'&quot;')}"></label>
+      <button class="brew" id="brewBtn">☕ brew it</button><div id="slot"></div>`;
+      $('#cupname').oninput=e=>M.name=e.target.value; $('#brewBtn').onclick=brew; };
+    ctl.addEventListener('click',e=>{ if(busy) return; const b=e.target.closest('button'); if(!b||b.id==='brewBtn') return;
+      if(b.dataset.d) M.d=+b.dataset.d; else if(b.dataset.s) M.size=+b.dataset.s; else if(b.dataset.m) M.milk=b.dataset.m;
+      else if(b.dataset.p) M.pumps=Math.max(0,Math.min(4,M.pumps+ +b.dataset.p)); else if(b.dataset.x){ const x=b.dataset.x; M.extras.has(x)?M.extras.delete(x):M.extras.add(x); } else return;
+      panel(); draw(); });
+    function brew(){ if(busy) return; busy=true; $('#brewBtn').disabled=true; $('#brewBtn').textContent='brewing…'; $('#slot').innerHTML='';
+      const d=DRINKS[M.d]; $('#lamp').setAttribute('fill','#9DB35E'); $('#needle').style.transform=`rotate(${M.extras.has('extra shot')?60:20}deg)`; $('#scr1').textContent='grinding…'; $('#scr2').textContent='tamping';
+      const sc = d.k==='matcha'?C.matcha:d.k==='chai'?C.chai:'#5A341F';
+      const T=reduce?10:3400, t0=performance.now();
+      (function step(now){ if(!alive) return; const p=Math.min(1,(now-t0)/T), pour=Math.max(0,Math.min(1,(p-.15)/.65));
+        const sh=p>.13&&p<.8?16:0; ['st1','st2'].forEach(id=>{ const s=$('#'+id); s.setAttribute('height',sh); s.setAttribute('fill',sc); });
+        $('#mcup').innerHTML=machineCup(pour);
+        if(p>.15&&p<.8){ $('#scr1').textContent='pouring'; $('#scr2').textContent=Math.round(pour*100)+'%'; }
+        if(p<1) requestAnimationFrame(step); else done(); })(t0);
+      function done(){ busy=false; $('#lamp').setAttribute('fill','#5a1d12'); $('#needle').style.transform='rotate(-120deg)'; $('#scr1').textContent='order up!'; $('#scr2').textContent=M.name?('for '+M.name.slice(0,16)):d.n;
+        $('#brewBtn').disabled=false; $('#brewBtn').textContent='☕ brew another'; confettiAt($('#mach'),40);
+        const no=Math.floor(100+Math.random()*899), nm=(M.name||'friend').replace(/[<>&"]/g,'');
+        $('#slot').innerHTML=`<div class="receipt"><h4>café pawffee</h4><div class="c">order #${no} · ${new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}).toLowerCase()}</div><hr>
+          <div class="row"><span>for</span><b>${nm}</b></div><div class="row"><span>1 × ${['small','medium','large'][M.size]} ${d.n}</span><span>♥</span></div>
+          <div class="row"><span>milk</span><span>${M.milk==='none'?'none':M.milk}</span></div>${M.pumps?`<div class="row"><span>caramel</span><span>${M.pumps} pump${M.pumps>1?'s':''}</span></div>`:''}
+          ${[...M.extras].map(x=>`<div class="row"><span>+ ${x}</span><span>free</span></div>`).join('')}<hr>
+          <div><b>yogashree says:</b> ${LINES[d.k]}</div><hr><div class="row"><b>total</b><b>one smile</b></div><div class="bars"></div><div class="c">come back soon ☕</div></div>`;
+        $('#slot').scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'}); } }
+    panel(); draw(); return ()=>{ alive=false; }; }};
+
+/* menu */
+let mf='all', md=4;
+VIEWS.menu={html:()=>`<h2 style="font-family:var(--f-chalk);font-weight:700;font-size:clamp(46px,6vw,72px)">today’s menu</h2><p class="lede" style="font-family:var(--f-chalk);font-size:23px">pick a drink to see what’s inside it.</p>
+  <div class="filters" id="mfil">${[['all','everything'],['hot','hot'],['iced','iced'],['nocoffee','no coffee']].map(f=>`<button data-f="${f[0]}" aria-pressed="${f[0]===mf}">${f[1]}</button>`).join('')}</div>
+  <div class="board"><div class="drinklist" id="mlist"></div><div class="detail" id="mdet" aria-live="polite"></div></div>`,
+  mount(){ const list=()=>{ $('#mlist').innerHTML=DRINKS.map((d,i)=>({d,i})).filter(x=>mf==='all'||x.d.t===mf).map(({d,i})=>`<button data-i="${i}" aria-pressed="${i===md}">${d.n}${d.fav?' ★':''}<span class="dots"></span><small>${d.t==='iced'?'iced':d.t==='nocoffee'?'tea':'hot'}</small></button>`).join(''); };
+    const det=()=>{ const d=DRINKS[md]; $('#mdet').innerHTML=`<div class="xs">${cupSVG(d,{steam:true})}<div class="legend">${d.legend.slice().reverse().map(([c,l])=>`<span><i style="background:${col(c)}"></i>${l}</span>`).join('')}</div></div>
+      <h3>${d.n}${d.fav?' ★':''}</h3><p><b>what’s in it:</b> ${d.ratio}.</p><p style="opacity:.8"><b>fun fact:</b> ${d.fact}</p><p class="take">yogashree’s take: “${d.take}”</p>
+      <button class="btn fill sm" id="brewThis" style="align-self:flex-start">brew this on the machine →</button>`;
+      $('#brewThis').onclick=()=>swapTo('machine',()=>{ M.d=md; }); };
+    $('#mfil').onclick=e=>{ const b=e.target.closest('[data-f]'); if(!b) return; mf=b.dataset.f; document.querySelectorAll('#mfil button').forEach(x=>x.setAttribute('aria-pressed',x===b)); list(); };
+    $('#mlist').onclick=e=>{ const b=e.target.closest('[data-i]'); if(!b) return; md=+b.dataset.i; list(); det(); };
+    list(); det(); }};
+
+/* orders */
+const MY=[['oat latte','extra hot, first thing in the morning'],['iced americano','any day above 20°c'],['whatever’s new','saturday café hopping'],['cortado','deep-work mode, do not disturb']];
+const pinned=[];
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function ticket(n,d,note,isNew){ return `<div class="ticket ${isNew?'new':''}"><span class="n">#${Math.floor(10+Math.random()*89)}</span><b>${esc(n)}</b><div>${esc(d)}</div><div style="margin-top:6px;opacity:.75">“${esc(note)}”</div></div>`; }
+VIEWS.orders={html:()=>`<h2>the order counter</h2><p class="lede">these are my usual orders. pin yours on the rail next to them, then send it my way.</p>
+  <div class="rail"><div class="tickets" id="tix">${pinned.map(p=>ticket(...p)).join('')}${MY.map(m=>ticket('yogashree',m[0],m[1])).join('')}</div></div>
+  <div class="grid2"><form class="oform" id="ofm">
+    <label for="on">name for the cup<input id="on" maxlength="40" placeholder="your name" autocomplete="off"></label>
+    <label for="od">your order<select id="od">${['a coffee chat','an oat latte, my treat','a café recommendation',...DRINKS.map(d=>'a '+d.n)].map(o=>`<option>${o}</option>`).join('')}</select></label>
+    <label for="onote">note for the barista<textarea id="onote" maxlength="200" placeholder="you have to try the café on my street"></textarea></label>
+    <button class="btn fill" type="submit" style="align-self:flex-start">pin my order →</button></form>
+    <div class="msgbox"><span class="mono" style="opacity:.6">your order, as a message</span><p id="omsg" style="font-size:17px"></p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span class="email">${EMAIL}</span><button class="btn fill sm" type="button" id="ocopy" style="color:var(--espresso)">copy message</button><a class="btn sm" id="omail" href="mailto:${EMAIL}">open mail ↗</a></div>
+      <span class="toast" id="otoast" aria-live="polite"></span></div></div>`,
+  mount(){ const msg=()=>{ const n=$('#on').value.trim()||'a friend', d=$('#od').value, note=$('#onote').value.trim(); return `hi yogashree! it’s ${n}. i’d love ${d}.${note?' '+note:''}`; };
+    const upd=()=>{ const m=msg(); $('#omsg').textContent=m; $('#omail').href=`mailto:${EMAIL}?subject=${encodeURIComponent('an order from café pawffee')}&body=${encodeURIComponent(m)}`; };
+    ['on','od','onote'].forEach(id=>$('#'+id).addEventListener('input',upd)); upd();
+    $('#ofm').onsubmit=e=>{ e.preventDefault(); const p=[$('#on').value.trim()||'a friend',$('#od').value,$('#onote').value.trim()||'surprise me']; pinned.unshift(p);
+      $('#tix').insertAdjacentHTML('afterbegin',ticket(...p,true)); confettiAt($('#tix'),50); $('#otoast').textContent=`order up for ${p[0]}! copy the message to send it.`; };
+    $('#ocopy').onclick=()=>copyText(msg()+'\n\n→ '+EMAIL,$('#otoast'),'copied. paste it into an email or dm.'); }};
+
+/* quiz */
+const QUIZ=[
+  {q:'it’s 8am. you are…',o:[['🌅','already up and productive',{espresso:2,americano:1}],['😴','negotiating with the snooze button',{latte:2,mocha:1}],['🧘','easing in slowly',{matcha:2,chai:1}],['🏃','out the door, coffee in hand',{icedlatte:2,coldbrew:1}]]},
+  {q:'pick a sweet spot',o:[['🍫','chocolate, always',{mocha:3}],['🍯','a little caramel',{latte:2,flatwhite:1}],['🌿','earthy, not sweet',{matcha:2,americano:1}],['🚫','no sugar, thanks',{espresso:2,cortado:1}]]},
+  {q:'your ideal café seat',o:[['🪟','by the window, people-watching',{cappuccino:2,flatwhite:1}],['💻','corner table, laptop open',{cortado:2,americano:1}],['🛋','the comfy couch with a book',{chai:2,latte:1}],['🚶','no seat, it’s to go',{coldbrew:2,icedlatte:1}]]},
+  {q:'pick a weekend plan',o:[['🎬','a romcom marathon',{latte:2,mocha:1}],['🗺','trying three new cafés',{flatwhite:2,cortado:1}],['🍨','a dessert crawl',{affogato:3}],['📚','one more chapter',{chai:2,cappuccino:1}]]},
+];
+VIEWS.quiz={html:()=>`<h2>what’s your coffee personality?</h2><p class="lede">four quick questions. the bean jars know things.</p><div class="quiz" id="quiz"></div>`,
+  mount(){ let qi=0, qs={}; const box=$('#quiz');
+    const show=()=>{ if(qi<QUIZ.length){ const q=QUIZ[qi]; box.innerHTML=`<div class="qbar"><i style="width:${qi/QUIZ.length*100}%"></i></div><span class="mono" style="opacity:.6">question ${qi+1} of ${QUIZ.length}</span><div class="qq">${q.q}</div><div class="qopts">${q.o.map((o,i)=>`<button data-o="${i}"><span>${o[0]}</span>${o[1]}</button>`).join('')}</div>`; }
+      else { const best=Object.entries(qs).sort((a,b)=>b[1]-a[1])[0][0]; const d=DRINKS.find(x=>x.k===best); const di=DRINKS.indexOf(d);
+        box.innerHTML=`<div class="qbar"><i style="width:100%"></i></div><div class="result">${cupSVG(d,{steam:true})}<div style="display:flex;flex-direction:column;gap:10px"><span class="mono" style="opacity:.7">you are a…</span><h3>${d.n}</h3><p style="font-size:18px">${d.take}</p><p style="opacity:.75">${d.ratio}.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn fill sm" id="qbrew">brew my drink →</button><button class="btn sm" id="qagain">take it again</button></div></div></div>`;
+        confettiAt(box,80); $('#qagain').onclick=()=>{ qi=0; qs={}; show(); }; $('#qbrew').onclick=()=>swapTo('machine',()=>{ M.d=di; }); } };
+    box.onclick=e=>{ const b=e.target.closest('[data-o]'); if(!b) return; Object.entries(QUIZ[qi].o[+b.dataset.o][2]).forEach(([k,v])=>qs[k]=(qs[k]||0)+v); qi++; show(); };
+    show(); }};
+
+/* latte art */
+VIEWS.latte={html:()=>`<h2>latte art table</h2><p class="lede">drag on the cup to pour steamed milk. hold still for a big pour, move for lines. or let the buttons do it.</p>
+  <div class="latte-wrap"><canvas id="lc" aria-label="latte art canvas"></canvas><div class="latte-btns" id="lbtns"><button data-a="heart">pour a heart</button><button data-a="tulip">tulip</button><button data-a="rosetta">rosetta</button><button data-a="paw">paw</button><button data-a="spin">spin the cup</button><button data-a="sip">take a sip</button></div></div>`,
+  mount(){ return latte($('#lc'), $('#lbtns')); }};
+
+/* radio */
+const TRACKS=[['justin bieber','on repeat, always'],['a romcom soundtrack','for tonight’s marathon'],['café jazz','the sound of a slow saturday'],['lo-fi beans','to sip and study to']];
+let trk=0, playing=false;
+VIEWS.radio={html:()=>`<h2>café radio</h2><p class="lede">what’s spinning behind the counter. pick a record.</p>
+  <div class="player"><div class="vinyl" id="vin"></div><div class="tracks" id="trks"></div></div><div class="eq" id="eq">${Array.from({length:24},()=>'<i></i>').join('')}</div>
+  <div style="margin-top:12px"><button class="btn fill" id="play">▶ play</button></div>`,
+  mount(){ const r=()=>{ $('#trks').innerHTML=TRACKS.map((t,i)=>`<button data-t="${i}" aria-pressed="${i===trk}"><span>${t[0]}</span><span style="opacity:.7;font-weight:500">${t[1]}</span></button>`).join(''); $('#vin').classList.toggle('on',playing); $('#eq').classList.toggle('on',playing); $('#play').textContent=playing?'❚❚ pause':'▶ play'; };
+    $('#trks').onclick=e=>{ const b=e.target.closest('[data-t]'); if(!b) return; trk=+b.dataset.t; playing=true; r(); }; $('#play').onclick=()=>{ playing=!playing; r(); }; r(); }};
+
+/* book */
+VIEWS.book={html:()=>`<h2>someone left a book</h2><p class="lede">it’s mine. tap to open.</p>
+  <div class="bookw"><button class="bookc" id="bk" aria-label="open the book"><div class="inside"><b>currently reading</b><p>a bank robbery, a hostage situation and far too many feelings. i keep saying “one more chapter” while my latte goes cold.</p><span class="mono" style="opacity:.6">bookmark: halfway</span></div><div class="cov"><span class="mono" style="font-size:11px;opacity:.8">tap to open</span><div><b>Anxious People</b><div style="margin-top:8px;opacity:.85">fredrik backman</div></div></div></button></div>`,
+  mount(){ $('#bk').onclick=()=>$('#bk').classList.toggle('open'); }};
+
+/* owner */
+let punched=0; try{ punched=+localStorage.getItem('ys-punch')||0; }catch(e){}
+VIEWS.owner={html:()=>`<h2>hi, i’m yogashree</h2>
+  <div class="grid2"><div class="note">welcome to café pawffee, my little café on the internet! coffee is my love language, new cafés are my weakness, and a romcom marathon is my favourite way to unwind. pull up a chair, brew something on the machine, and say hi at the order counter. ☕<br><br>— yogashree</div>
+  <div style="display:flex;flex-direction:column;gap:16px"><div class="punch"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><b class="display" style="font-size:22px">café punch card</b><span class="mono" id="pc"></span></div><div class="holes" id="holes"></div><span class="mono" style="font-size:10px;opacity:.7">punch all ten for a free coffee chat</span></div>
+    <div class="links"><a class="btn sm" href="https://www.linkedin.com/in/yogashree-s-551254227" target="_blank" rel="noopener">linkedin ↗</a><a class="btn sm" href="https://www.instagram.com/yoggsz_/" target="_blank" rel="noopener">instagram ↗</a><button class="btn sm fill" id="toOrders" style="color:var(--espresso)">say hi at the counter →</button></div></div></div>`,
+  mount(){ const h=()=>{ $('#holes').innerHTML=Array.from({length:10},(_,i)=>`<button class="${i<punched?'p':''}" data-h="${i}" aria-label="punch ${i+1}"></button>`).join(''); $('#pc').textContent=punched===10?'free chat unlocked!':`${punched} / 10`; };
+    $('#holes').onclick=e=>{ const b=e.target.closest('[data-h]'); if(!b) return; const i=+b.dataset.h; if(i===punched) punched++; else if(i===punched-1) punched--; else return; try{ localStorage.setItem('ys-punch',punched); }catch(e){} h(); if(punched===10) confettiAt($('#holes'),140); };
+    $('#toOrders').onclick=()=>swapTo('orders'); h(); }};
+
+/* barista rush */
+const GD=[['espresso',['espresso']],['cortado',['espresso','milk']],['cappuccino',['espresso','milk','foam']],['flat white',['espresso','espresso','milk']],['oat latte',['espresso','milk','milk','foam']],['mocha',['chocolate','espresso','milk','whip']],['americano',['espresso','water']],['iced latte',['ice','milk','espresso']],['cold brew',['ice','coldbrew']],['affogato',['gelato','espresso']],['matcha latte',['matcha','milk','foam']],['chai latte',['chai','milk','foam']]];
+const ING={espresso:['espresso','espresso','☕'],milk:['steamed milk','milk','🥛'],foam:['foam','foam','☁️'],chocolate:['chocolate','choco','🍫'],whip:['whipped cream','whip','🍦'],water:['hot water','water','💧'],ice:['ice',null,'🧊'],coldbrew:['cold brew','coldbrew','🫙'],gelato:['gelato','icecream','🍨'],matcha:['matcha','matcha','🍵'],chai:['chai','chai','🫖']};
+const NAMES=['maya','leo','priya','sam','noor','jordan','aiko','ben','zara','omar','lucy','dev','rosa','kai'];
+VIEWS.game={html:()=>`<h2>barista rush</h2><p class="lede">60 seconds behind the counter. tap the ingredients in the right order to build each drink. keep a streak going and regulars stop telling you the recipe.</p>
+  <div class="rush" id="rush">
+    <div class="rush-top"><span>score <b id="rsc">0</b></span><span>streak <b id="rst">0</b></span><span>best <b id="rbe">0</b></span><div class="timer"><i id="rti"></i></div><span id="rtt">60s</span></div>
+    <div class="rush-main"><div class="cust"><div class="cust-row"><span class="face" id="rfa">🙂</span><div class="cbub" id="rbu">…</div></div><div class="tk" id="rtk"></div></div><div class="glassbox" id="rgl"></div></div>
+    <div class="ings" id="ring">${Object.entries(ING).map(([k,v])=>`<button data-g="${k}"><span>${v[2]}</span>${v[0]}</button>`).join('')}</div>
+    <div class="rush-ov" id="rov"></div>
+  </div>`,
+  mount(){ let best=0; try{ best=+localStorage.getItem('ys-rush')||0; }catch(e){}
+    const S={on:false,score:0,t:60,streak:0,o:null,steps:[],peek:false,busy:false,raf:null,last:0,served:0}; let alive=true, lastD=-1;
+    const el=id=>document.getElementById(id);
+    el('rbe').textContent=best;
+    function intro(){ el('rov').hidden=false; el('rov').innerHTML=`<h3>ready for your shift?</h3><p>a customer orders, you build it. wrong ingredient spills the cup. after a 3-drink streak the recipe hides, but you can peek for 3 points.</p><button class="pill white" id="rgo">start shift ☕</button>`; el('rgo').onclick=start; }
+    function start(){ Object.assign(S,{on:true,score:0,t:60,streak:0,served:0,busy:false,last:performance.now()}); el('rov').hidden=true; next(); S.raf=requestAnimationFrame(loop); }
+    function next(){ let i; do{ i=Math.floor(Math.random()*GD.length); }while(i===lastD); lastD=i; S.o={name:NAMES[Math.floor(Math.random()*NAMES.length)],d:GD[i][0],steps:GD[i][1]}; S.steps=[]; S.peek=false; S.busy=false;
+      el('rfa').textContent=['🙂','😊','🤓','😎','🥱','😄'][Math.floor(Math.random()*6)]; el('rbu').textContent=`hi! one ${S.o.d}, please.`; draw(); }
+    function draw(){ const hide=S.streak>=3&&!S.peek;
+      el('rtk').innerHTML=`<span>order for <b style="font-family:var(--f-mono);font-size:12px">${S.o.name}</b></span><b>${S.o.d}</b><div class="steps">${S.o.steps.map((k,i)=>i<S.steps.length?`<span class="done">✓ ${ING[k][0]}</span>`:hide?`<span class="hid" data-peek="1" title="peek for 3 points">?</span>`:`<span>${ING[k][0]}</span>`).join('')}</div>${hide?'<span style="opacity:.6">regular. tap a ? to peek (−3)</span>':''}`;
+      const liq=S.o.steps.filter(k=>ING[k][1]), tot=liq.length||1; const layers=S.steps.filter(k=>ING[k][1]).map(k=>[ING[k][1],1/tot]);
+      el('rgl').innerHTML=cupSVG({cup:'glass',t:'iced',L:[]},{layers,ice:S.steps.includes('ice')});
+      el('rsc').textContent=S.score; el('rst').textContent=S.streak; }
+    function pop(t){ const d=document.createElement('div'); d.className='ptxt'; d.textContent=t; el('rgl').appendChild(d); setTimeout(()=>d.remove(),1000); }
+    function tap(k){ if(!S.on||S.busy) return; const need=S.o.steps[S.steps.length];
+      if(k===need){ S.steps.push(k); draw(); if(S.steps.length===S.o.steps.length) serve(); }
+      else { S.steps=[]; S.streak=0; const g=el('rgl'); g.classList.remove('spill'); g.offsetWidth; g.classList.add('spill'); el('rfa').textContent='😬'; el('rbu').textContent=`hmm, that’s not a ${S.o.d}. try again?`; draw(); } }
+    function serve(){ S.busy=true; const pts=10+S.streak*2; S.score+=pts; S.streak++; S.served++; pop('+'+pts); el('rfa').textContent='😋'; el('rfa').classList.remove('bounce'); el('rfa').offsetWidth; el('rfa').classList.add('bounce');
+      el('rbu').textContent=['perfect, thank you!','wow, that was fast.','exactly how i like it.','you’re a natural!'][Math.floor(Math.random()*4)]; draw(); confettiAt(el('rgl'),18); setTimeout(()=>{ if(S.on) next(); },650); }
+    function loop(now){ if(!alive||!S.on) return; const dt=(now-S.last)/1000; S.last=now; S.t=Math.max(0,S.t-dt); el('rti').style.width=(S.t/60*100)+'%'; el('rti').classList.toggle('low',S.t<10); el('rtt').textContent=Math.ceil(S.t)+'s';
+      if(S.t<=0) return end(); S.raf=requestAnimationFrame(loop); }
+    function end(){ S.on=false; const nb=S.score>best; if(nb){ best=S.score; try{ localStorage.setItem('ys-rush',best); }catch(e){} } el('rbe').textContent=best;
+      const rank=S.score<40?'trainee':S.score<100?'barista':S.score<180?'head barista':'coffee wizard';
+      el('rov').hidden=false; el('rov').innerHTML=`<span class="mono" style="opacity:.7">shift over</span><div class="big">${S.score}</div><h3>${rank}</h3><p>${S.served} drink${S.served===1?'':'s'} served${nb?' · new best!':` · best ${best}`}</p><button class="pill white" id="rgo">another shift</button>`;
+      el('rgo').onclick=start; if(nb) confettiAt(el('rush'),120); }
+    el('ring').onclick=e=>{ const b=e.target.closest('[data-g]'); if(b) tap(b.dataset.g); };
+    el('rtk').onclick=e=>{ if(e.target.closest('[data-peek]') && S.on){ S.peek=true; S.score=Math.max(0,S.score-3); draw(); } };
+    S.o={name:'—',d:'—',steps:[]}; draw(); intro();
+    return ()=>{ alive=false; S.on=false; cancelAnimationFrame(S.raf); }; }};
+
+/* ---------- latte canvas ---------- */
+function latte(cv, btns, isActive){
+  const g=cv.getContext('2d'), milk=document.createElement('canvas'), m=milk.getContext('2d');
+  let W=0,cx=0,cy=0,R=0,rot=0,spinV=0,dpr=1,specks=[],alive=true,presetT=null;
+  function size(){ const r=cv.getBoundingClientRect(); dpr=Math.min(devicePixelRatio||1,2); W=r.width||400; cv.width=W*dpr; cv.height=W*dpr; milk.width=W*dpr; milk.height=W*dpr; cx=cy=W/2; R=W*.33; m.setTransform(dpr,0,0,dpr,0,0);
+    specks=Array.from({length:180},()=>{ const a=Math.random()*7, d=Math.sqrt(Math.random())*R; return [Math.cos(a)*d,Math.sin(a)*d,Math.random()*1.4+.3,Math.random()]; }); }
+  function blob(x,y,r,a){ const gr=m.createRadialGradient(x,y,0,x,y,r); gr.addColorStop(0,`rgba(255,248,239,${a})`); gr.addColorStop(.7,`rgba(250,240,226,${a*.92})`); gr.addColorStop(1,'rgba(250,240,226,0)'); m.fillStyle=gr; m.beginPath(); m.arc(x,y,r,0,7); m.fill(); }
+  function cut(x1,y1,x2,y2,w){ m.save(); m.globalCompositeOperation='destination-out'; m.lineCap='round'; m.lineWidth=w; m.beginPath(); m.moveTo(x1,y1); m.lineTo(x2,y2); m.stroke(); m.restore(); }
+  function draw(){ g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,W);
+    g.fillStyle='rgba(0,0,0,.22)'; g.beginPath(); g.arc(cx+W*.012,cy+W*.025,W*.47,0,7); g.fill();
+    const sg=g.createRadialGradient(cx-W*.1,cy-W*.12,W*.05,cx,cy,W*.48); sg.addColorStop(0,'#FFFDF8'); sg.addColorStop(1,'#E5D6C3'); g.fillStyle=sg; g.beginPath(); g.arc(cx,cy,W*.47,0,7); g.fill();
+    g.save(); g.translate(cx,cy); g.rotate(rot); g.fillStyle='#FFF8EF'; g.strokeStyle='rgba(36,21,15,.12)'; g.lineWidth=2; g.beginPath(); g.roundRect?g.roundRect(R*1.08,-R*.16,R*.42,R*.32,R*.16):g.rect(R*1.08,-R*.16,R*.42,R*.32); g.fill(); g.stroke(); g.restore();
+    g.fillStyle='rgba(0,0,0,.15)'; g.beginPath(); g.arc(cx+3,cy+6,R*1.16,0,7); g.fill(); g.fillStyle='#FFF8EF'; g.beginPath(); g.arc(cx,cy,R*1.15,0,7); g.fill();
+    const cg=g.createRadialGradient(cx,cy,R*.1,cx,cy,R); cg.addColorStop(0,'#7A4A2C'); cg.addColorStop(.75,'#5A341F'); cg.addColorStop(.93,'#8E5A33'); cg.addColorStop(1,'#3E2214'); g.fillStyle=cg; g.beginPath(); g.arc(cx,cy,R,0,7); g.fill();
+    g.save(); g.beginPath(); g.arc(cx,cy,R,0,7); g.clip(); g.translate(cx,cy); g.rotate(rot); specks.forEach(([x,y,s,o])=>{ g.fillStyle=`rgba(${o>.5?'190,130,80':'40,20,10'},${.25+o*.2})`; g.beginPath(); g.arc(x,y,s,0,7); g.fill(); }); g.translate(-cx,-cy); g.drawImage(milk,0,0,milk.width,milk.height,0,0,W,W); g.restore();
+    g.strokeStyle='rgba(255,255,255,.7)'; g.lineWidth=W*.012; g.beginPath(); g.arc(cx,cy,R*1.1,Math.PI*1.1,Math.PI*1.45); g.stroke(); }
+  const toCup=(x,y)=>{ const dx=x-cx, dy=y-cy, c=Math.cos(-rot), s=Math.sin(-rot); return [cx+dx*c-dy*s, cy+dx*s+dy*c]; };
+  let pouring=false,px=0,py=0,lx=0,ly=0,still=0;
+  const pt=e=>{ const r=cv.getBoundingClientRect(); return [(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*W/r.height]; };
+  cv.onpointerdown=e=>{ stopP(); pouring=true; cv.setPointerCapture(e.pointerId); [px,py]=pt(e); lx=px; ly=py; still=0; };
+  cv.onpointermove=e=>{ if(pouring) [px,py]=pt(e); };
+  cv.onpointerup=cv.onpointercancel=()=>pouring=false;
+  const inCup=(x,y)=>Math.hypot(x-cx,y-cy)<R*.98;
+  function frame(){ if(!alive) return; if(isActive && !isActive()){ requestAnimationFrame(frame); return; }
+    if(pouring){ const mv=Math.hypot(px-lx,py-ly); if(mv<1.5){ still=Math.min(still+1,80); if(inCup(px,py)){ const [x,y]=toCup(px,py); blob(x,y,R*(.06+still*.0045),.5); } }
+      else { still=0; const [ax,ay]=toCup(lx,ly), [bx,by]=toCup(px,py); m.save(); m.beginPath(); m.arc(cx,cy,R*.985,0,7); m.clip(); m.lineCap='round'; m.lineJoin='round'; m.shadowColor='rgba(255,248,239,.9)'; m.shadowBlur=R*.05; m.strokeStyle='rgb(251,244,234)'; m.lineWidth=R*.09; m.beginPath(); m.moveTo(ax,ay); m.lineTo(bx,by); m.stroke(); m.restore(); } lx=px; ly=py; }
+    if(Math.abs(spinV)>.0005){ rot+=spinV; spinV*=.985; } draw(); requestAnimationFrame(frame); }
+  function stopP(){ if(presetT){ clearInterval(presetT); presetT=null; } }
+  function run(steps,dt=16){ stopP(); let i=0; presetT=setInterval(()=>{ if(i>=steps.length) return stopP(); steps[i++](); },dt); }
+  const clear=()=>m.clearRect(0,0,W,W);
+  const P={
+    heart(){ clear(); const s=[]; for(let i=0;i<30;i++) s.push(()=>blob(cx,cy,R*(.1+i*.012),.35));
+      for(let i=1;i<=24;i++) s.push(()=>{ const k=i/24*R*.036; m.save(); m.translate(cx,cy+R*.04); m.shadowColor='rgba(255,248,239,.9)'; m.shadowBlur=R*.06; m.fillStyle='rgba(255,248,239,.5)'; m.beginPath();
+        for(let a=0;a<=Math.PI*2+.01;a+=.05){ const x=16*Math.pow(Math.sin(a),3), y=-(13*Math.cos(a)-5*Math.cos(2*a)-2*Math.cos(3*a)-Math.cos(4*a)); a?m.lineTo(x*k,y*k):m.moveTo(x*k,y*k); } m.fill(); m.restore(); });
+      for(let i=0;i<=12;i++) s.push(()=>{ const t=i/12; cut(cx,cy-R*.5,cx,cy-R*.5+R*.95*t,R*.025*(1-t*.7)); }); run(s); },
+    tulip(){ clear(); const s=[]; [[.42,.34],[.08,.27],[-.22,.2]].forEach(([oy,rr])=>{ for(let i=0;i<26;i++) s.push(()=>blob(cx,cy+R*oy-i*R*.004,R*rr*(.4+i*.024),.4)); });
+      for(let i=0;i<=16;i++) s.push(()=>{ const t=i/16; cut(cx,cy-R*.52,cx,cy-R*.52+R*1.15*t,R*.03*(1-t*.5)); }); run(s); },
+    rosetta(){ clear(); const s=[]; for(let k=0;k<9;k++){ const y=cy+R*.6-k*R*.13, w=R*(.62-k*.05); for(let i=0;i<10;i++) s.push(()=>{ const t=i/9; blob(cx-w+2*w*t,y-Math.sin(t*Math.PI)*R*.09,R*(.075-k*.004),.55); }); }
+      for(let i=0;i<=18;i++) s.push(()=>{ const t=i/18; cut(cx,cy-R*.6,cx,cy-R*.6+R*1.3*t,R*.03); }); run(s,14); },
+    paw(){ clear(); const s=[]; for(let i=0;i<34;i++) s.push(()=>blob(cx,cy+R*.2,R*(.08+i*.008),.42));
+      [[-.42,-.12],[-.16,-.42],[.16,-.42],[.42,-.12]].forEach(([ox,oy])=>{ for(let i=0;i<16;i++) s.push(()=>blob(cx+R*ox,cy+R*oy,R*(.05+i*.0075),.45)); }); run(s); },
+    spin(){ spinV+=.09; },
+    sip(){ stopP(); let a=0; const t=setInterval(()=>{ m.save(); m.globalCompositeOperation='destination-out'; m.fillStyle='rgba(0,0,0,.12)'; m.fillRect(0,0,W,W); m.restore(); if(++a>24) clearInterval(t); },30); }
+  };
+  btns.onclick=e=>{ const b=e.target.closest('[data-a]'); if(b && P[b.dataset.a]) P[b.dataset.a](); };
+  requestAnimationFrame(()=>{ size(); if(!reduce) P.heart(); frame(); });
+  const onR=()=>size(); addEventListener('resize',onR);
+  return ()=>{ alive=false; stopP(); removeEventListener('resize',onR); };
+}
+
+/* ---------- utilities ---------- */
+function copyText(t,out,ok){ const fb=()=>{ out.textContent='select the email and copy it with ctrl/⌘ + c.'; }; try{ navigator.clipboard.writeText(t).then(()=>out.textContent=ok,fb); }catch(e){ fb(); } }
+const cvs=$('#confetti'), cx2=cvs.getContext('2d'); let parts=[], craf=null;
+function confettiAt(el,n){ if(!el) return; const r=el.getBoundingClientRect(); confetti(r.left+r.width/2, r.top+Math.min(r.height/2,200), n); }
+function confetti(x,y,n){ if(reduce) return; const cols=['#E0953E','#FFF8EF','#C8452F','#9DB35E','#6B4130'];
+  for(let i=0;i<n;i++){ const a=Math.random()*Math.PI*2, sp=3+Math.random()*7; parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-5,r:Math.random()*6,vr:(Math.random()-.5)*.3,c:cols[i%5],bean:Math.random()<.45,life:80+Math.random()*50}); }
+  if(!craf) craf=requestAnimationFrame(cstep); }
+function cstep(){ const d=Math.min(devicePixelRatio||1,2); if(cvs.width!==Math.round(innerWidth*d)){ cvs.width=innerWidth*d; cvs.height=innerHeight*d; } cx2.setTransform(d,0,0,d,0,0); cx2.clearRect(0,0,innerWidth,innerHeight);
+  parts=parts.filter(p=>p.life-->0); parts.forEach(p=>{ p.vy+=.22; p.vx*=.985; p.x+=p.vx; p.y+=p.vy; p.r+=p.vr; cx2.save(); cx2.translate(p.x,p.y); cx2.rotate(p.r); cx2.globalAlpha=Math.min(1,p.life/30); cx2.fillStyle=p.c;
+    if(p.bean){ cx2.beginPath(); cx2.ellipse(0,0,4,6,0,0,7); cx2.fill(); } else cx2.fillRect(-4,-2.5,8,5); cx2.restore(); });
+  craf=parts.length?requestAnimationFrame(cstep):(cx2.clearRect(0,0,innerWidth,innerHeight),null); }
+/* welcome page */
+latte($('#wlatte'), $('#wlbtns'), ()=>!welcome.hidden);
+$('#pawdot').addEventListener('click',e=>{ const r=e.currentTarget.getBoundingClientRect(); confetti(r.left+r.width/2,r.top,60); sayAt(r.left+r.width/2,r.top-6,['boop!','woof?','paws for coffee','woof ☕'][Math.floor(Math.random()*4)]); });
+})();
+</script>
+
+</body></html>
